@@ -1,3 +1,4 @@
+import { updateRecord } from '/opt/dynamoDB';
 import { getScopes, initXeroClient } from '/opt/xero';
 import { AppSyncIdentityCognito, Context } from '@aws-appsync/utils';
 
@@ -24,5 +25,37 @@ export const handler = async (ctx: Context) => {
     throw new Error(err.message);
   }
 
-  return {};
+  try {
+    await xero.initialize();
+  } catch (err: any) {
+    console.log('ERROR initialize xero: ', err);
+    throw new Error(err.message);
+  }
+
+  let tokenSet;
+  try {
+    tokenSet = await xero.apiCallback(url);
+  } catch (err: any) {
+    console.log('ERROR get tokenSet ', err);
+    throw new Error(err.message);
+  }
+
+  let response;
+  try {
+    const keys = {
+      id: sub,
+    };
+
+    const updateParams = {
+      tokenSet: JSON.stringify(tokenSet),
+    };
+
+    response = await updateRecord(TABLE_USER ?? '', keys, updateParams);
+    console.log(response);
+  } catch (err: any) {
+    console.log('Error update user ', err);
+    throw new Error(err.message);
+  }
+
+  return { response };
 };

@@ -3,10 +3,13 @@ import {
   xeroCreateConsentUrl as XERO_CREATE_CONSENT_URL,
   XeroScopeSet,
 } from '../../graphql';
-import { Button } from '@mui/material';
+import { Box, Button, CircularProgress } from '@mui/material';
 
 export const ConnectDisconnectXero = () => {
-  const [xeroCreateConsentUrl] = useMutation(gql(XERO_CREATE_CONSENT_URL), {});
+  const [xeroCreateConsentUrl, { loading }] = useMutation(
+    gql(XERO_CREATE_CONSENT_URL),
+    {}
+  );
 
   const onXeroConnect = async () => {
     try {
@@ -32,12 +35,21 @@ export const ConnectDisconnectXero = () => {
         backgroundColor: '#13B5EA',
         '&:hover': {
           backgroundColor: '#13B5EA',
-          opacity: 0.5,
+          opacity: 0.75,
         },
-        color: '#FFF'
+        color: '#FFF',
+        height: '36px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
       Connect Xero
+      {loading && (
+        <Box sx={{ marginLeft: 2 }}>
+          <CircularProgress color="secondary" size={20} />
+        </Box>
+      )}
     </Button>
   );
 };

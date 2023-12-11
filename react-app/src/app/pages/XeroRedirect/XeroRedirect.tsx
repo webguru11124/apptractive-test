@@ -4,16 +4,18 @@ import {
   xeroCreateTokenSet as XERO_CREATE_TOKEN_SET,
   XeroScopeSet,
 } from '../../graphql';
-import { Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { Auth } from 'aws-amplify';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSearchParams } from 'react-router-dom';
+import { NavLink, useSearchParams } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 
 /* eslint-disable-next-line */
 export interface XeroRedirectProps {}
 
 export function XeroRedirect(props: XeroRedirectProps) {
+  const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const [xeroCreateTokenSet] = useMutation(gql(XERO_CREATE_TOKEN_SET), {});
@@ -43,7 +45,7 @@ export function XeroRedirect(props: XeroRedirectProps) {
             scopeSet: XeroScopeSet.ACCOUNTING,
           },
         },
-      }
+      };
 
       try {
         const { data } = await xeroCreateTokenSet(options);
@@ -54,12 +56,28 @@ export function XeroRedirect(props: XeroRedirectProps) {
       }
     };
 
-    createTokenSet();
-  }, [xeroCreateTokenSet]);
+    if (!errorCode) {
+      enqueueSnackbar('Xero Connected!', { variant: 'success' });
+      createTokenSet();
+    }
+  }, [xeroCreateTokenSet, errorCode, enqueueSnackbar]);
 
   return (
     <>
-      <Typography>Xero redirected</Typography>
+      <NavLink to="/dashboard">
+        <Button
+          sx={{
+            backgroundColor: '#13B5EA',
+            '&:hover': {
+              backgroundColor: '#13B5EA',
+              opacity: 0.5,
+            },
+            color: '#FFF',
+          }}
+        >
+          Go to Dashboard
+        </Button>
+      </NavLink>
       {errorCode && (
         <Typography color="error">
           {t('xeroError', { ns: 'xero' })} ({errorCode})
