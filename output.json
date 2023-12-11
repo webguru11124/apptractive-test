@@ -1,19 +1,14 @@
 {
   "FULDatabaseStack": {
-    "ExportsOutputFnGetAttUserTableBD4BF69EArn9A5B685A": "arn:aws:dynamodb:us-east-1:727355274795:table/FULDatabaseStack-UserTableBD4BF69E-17C3OVBTW04V",
-    "ExportsOutputRefUserTableBD4BF69E1F4D2BA4": "FULDatabaseStack-UserTableBD4BF69E-17C3OVBTW04V"
+    "ExportsOutputFnGetAttUserTableBD4BF69EArn9A5B685A": "arn:aws:dynamodb:us-east-1:558086660816:table/FULDatabaseStack-UserTableBD4BF69E-EW81RISTSIO3",
+    "ExportsOutputRefUserTableBD4BF69E1F4D2BA4": "FULDatabaseStack-UserTableBD4BF69E-EW81RISTSIO3"
   },
   "FULAuthStack": {
-    "ExportsOutputRefFULUserPooldev11ACC610F45E4B38": "us-east-1_F56KkRYJj",
-    "UserPoolClientId": "grv2gcn0s3guvd7njvvpfbtea",
-    "UserPoolDomain": "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_F56KkRYJj",
-    "UserPoolId": "us-east-1_F56KkRYJj",
-    "ExportsOutputFnGetAttFULUserPooldev11ACC610Arn7498BECF": "arn:aws:cognito-idp:us-east-1:727355274795:userpool/us-east-1_F56KkRYJj",
-    "IdentityPoolId": "us-east-1:5d81b5c0-4359-488c-9f41-484bda557394"
-  },
-  "FULAppSyncAPIStack": {
-    "GraphQLAPIID": "ushuse52ebasjlovcmldj5wewe",
-    "GraphQLAPIURL": "https://xxecqufbufbl7lt5rueh5rbary.appsync-api.us-east-1.amazonaws.com/graphql",
-    "GraphQLAPIKey": "da2-siegqs5o6rhwzhw6tyzoj7rgaa"
+    "ExportsOutputRefFULUserPooldev11ACC610F45E4B38": "us-east-1_vVWDyH5sr",
+    "UserPoolClientId": "2i1cvlebarv9lissrmnuifua3k",
+    "UserPoolDomain": "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_vVWDyH5sr",
+    "UserPoolId": "us-east-1_vVWDyH5sr",
+    "ExportsOutputFnGetAttFULUserPooldev11ACC610Arn7498BECF": "arn:aws:cognito-idp:us-east-1:558086660816:userpool/us-east-1_vVWDyH5sr",
+    "IdentityPoolId": "us-east-1:0287f1b9-16b5-499b-9e45-30920fee2be2"
   }
 }

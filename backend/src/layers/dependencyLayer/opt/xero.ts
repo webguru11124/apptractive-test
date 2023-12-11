@@ -11,6 +11,12 @@ interface InitXeroProps {
   grantType?: string;
 }
 
+// interface GetXeroInvoicesProps {
+//   redirectUris?: string[]; //The redirect URI configured for the app created at https://developer.xero.com/myapps must match the REDIRECT_URI variable otherwise an "Invalid URI" error will be reported when attempting the initial connection to Xero.
+//   scopes: string[];
+//   statuses: Array<string>;
+//   page: number;
+// }
 /**
  * Initialize Xero client
  *
@@ -20,12 +26,11 @@ interface InitXeroProps {
  * @param grantType
  */
 export const initXeroClient = ({
-  redirectUris = ['http://localhost:4200/xero-redirect'],
+  redirectUris = ['https://localhost:4200/xero-redirect'],
   scopes,
   httpTimeout = 2000,
-  grantType
-}:
-  InitXeroProps) => {
+  grantType,
+}: InitXeroProps) => {
   if (!XERO_CLIENT_ID) {
     throw new Error('XERO_CLIENT_ID not set');
   }
@@ -40,18 +45,16 @@ export const initXeroClient = ({
     redirectUris,
     scopes,
     grantType,
-    httpTimeout
+    httpTimeout,
   });
 };
 
 export const getScopes = (scopeSet: string) => {
   if (scopeSet === 'PROFILE') {
     return 'openid profile email offline_access';
-  }
-  else if (scopeSet === 'ACCOUNTING') {
+  } else if (scopeSet === 'ACCOUNTING') {
     return 'offline_access accounting.transactions accounting.settings accounting.contacts accounting.contacts accounting.attachments';
-  }
-  else {
+  } else {
     return '';
   }
 };
