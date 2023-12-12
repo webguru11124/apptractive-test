@@ -2,8 +2,7 @@ import { Checkbox, TableCell, TableRow } from '@mui/material';
 import TableHead from '@mui/material/TableHead';
 type HeaderCell = {
   label: string;
-  numeric: 'right' | 'left';
-  disablePadding: 'none' | 'normal';
+  numeric: 'right' | 'left' | 'center';
 };
 interface EnhancedTableProps {
   numSelected: number;
@@ -29,11 +28,7 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
           />
         </TableCell>
         {props.headerCells.map((headCell, index) => (
-          <TableCell
-            key={index}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
-          >
+          <TableCell key={index} align={headCell.numeric ? 'right' : 'left'}>
             {headCell.label}
           </TableCell>
         ))}

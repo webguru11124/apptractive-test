@@ -12,7 +12,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import { EnhancedTableHead } from './TableHead';
 import { EnhancedTableToolbar } from './TableToolbar';
-import { Spinner } from '../Spinner';
 
 interface EnhancedTableProps<T extends object> {
   rows: T[];
@@ -22,6 +21,7 @@ interface EnhancedTableProps<T extends object> {
   setPage: (page: number) => void;
   totalCount: number;
   setRowsPerPage: (page: number) => void;
+  onFilterClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export function EnhancedTable<T extends object>({
@@ -32,6 +32,7 @@ export function EnhancedTable<T extends object>({
   rowsPerPage,
   setRowsPerPage,
   columns,
+  onFilterClick,
 }: EnhancedTableProps<T>) {
   console.log(rows);
   const [selected, setSelected] = React.useState<readonly number[]>([]);
@@ -91,14 +92,16 @@ export function EnhancedTable<T extends object>({
   );
   const headerCells = columns.map((key) => ({
     label: key as string,
-    numeric: 'right' as 'right' | 'left',
-    disablePadding: 'normal' as 'none' | 'normal',
+    numeric: 'center' as 'right' | 'left' | 'center',
   }));
 
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar
+          numSelected={selected.length}
+          onFilterClick={onFilterClick}
+        />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -111,66 +114,53 @@ export function EnhancedTable<T extends object>({
               onSelectAllClick={handleSelectAllClick}
               rowCount={rows.length}
             />
-            <React.Suspense fallback={<Spinner />}>
-              <TableBody>
-                {visibleRows.map((row: T, index) => {
-                  const isItemSelected = isSelected(index);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+            <TableBody>
+              {visibleRows.map((row: T, index) => {
+                const isItemSelected = isSelected(index);
+                const labelId = `enhanced-table-checkbox-${index}`;
 
-                  return (
-                    <TableRow
-                      hover
-                      onClick={(event) => handleClick(event, index)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={index}
-                      selected={isItemSelected}
-                      sx={{ cursor: 'pointer' }}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                        />
-                      </TableCell>
-                      {Object.keys(row)
-                        .filter((key) => columns.includes(key as keyof T))
-                        .map((key: string, index: number) => (
-                          <React.Fragment key={index}>
-                            {index === 0 ? (
-                              <TableCell
-                                component="th"
-                                id={labelId}
-                                scope="row"
-                                padding="none"
-                              >
-                                {row[key as keyof T] as React.ReactNode}
-                              </TableCell>
-                            ) : (
-                              <TableCell align="right">
-                                {row[key as keyof T] as React.ReactNode}
-                              </TableCell>
-                            )}
-                          </React.Fragment>
-                        ))}
-                    </TableRow>
-                  );
-                })}
-                {emptyRows > 0 && (
+                return (
                   <TableRow
-                    style={{
-                      height: (dense ? 33 : 53) * emptyRows,
-                    }}
+                    hover
+                    onClick={(event) => handleClick(event, index)}
+                    role="checkbox"
+                    aria-checked={isItemSelected}
+                    tabIndex={-1}
+                    key={index}
+                    selected={isItemSelected}
+                    sx={{ cursor: 'pointer' }}
                   >
-                    <TableCell colSpan={6} />
+                    <TableCell padding="checkbox">
+                      <Checkbox
+                        color="primary"
+                        checked={isItemSelected}
+                        inputProps={{
+                          'aria-labelledby': labelId,
+                        }}
+                      />
+                    </TableCell>
+                    {Object.keys(row)
+                      .filter((key) => columns.includes(key as keyof T))
+                      .map((key: string, index: number) => (
+                        <React.Fragment key={index}>
+                          <TableCell align="right">
+                            {row[key as keyof T] as React.ReactNode}
+                          </TableCell>
+                        </React.Fragment>
+                      ))}
                   </TableRow>
-                )}
-              </TableBody>
-            </React.Suspense>
+                );
+              })}
+              {emptyRows > 0 && (
+                <TableRow
+                  style={{
+                    height: (dense ? 33 : 53) * emptyRows,
+                  }}
+                >
+                  <TableCell colSpan={6} />
+                </TableRow>
+              )}
+            </TableBody>
           </Table>
         </TableContainer>
         <TablePagination

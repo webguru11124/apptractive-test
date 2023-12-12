@@ -1,12 +1,12 @@
 import { alpha } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import { IconButton, Tooltip } from '@mui/material';
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
+  onFilterClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
@@ -46,7 +46,9 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         </Typography>
       )}
       <Tooltip title="Filter list">
-        <IconButton>
+        <IconButton
+          onClick={(event) => props.onFilterClick && props.onFilterClick(event)}
+        >
           <FilterListIcon />
         </IconButton>
       </Tooltip>
