@@ -88,7 +88,7 @@ export const xeroGetInvoices = /* GraphQL */ `
   }
 `;
 export const xeroGetInvoiceCount = /* GraphQL */ `
-  query XeroGetInvoiceCount {
-    xeroGetInvoiceCount
+  query XeroGetInvoiceCount($input: GetInvoiceCountInput) {
+    xeroGetInvoiceCount(input: $input)
   }
 `;

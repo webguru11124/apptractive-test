@@ -176,6 +176,10 @@ export type XeroPayment = {
   paymentID: string,
 };
 
+export type GetInvoiceCountInput = {
+  statuses?: Array< XeroInvoiceStatus | null > | null,
+};
+
 export type UpdateUserMutationVariables = {
   input?: UpdateUserInput | null,
 };
@@ -316,6 +320,10 @@ export type XeroGetInvoicesQuery = {
       paymentID: string,
     } | null > | null,
   } | null > | null,
+};
+
+export type XeroGetInvoiceCountQueryVariables = {
+  input?: GetInvoiceCountInput | null,
 };
 
 export type XeroGetInvoiceCountQuery = {
