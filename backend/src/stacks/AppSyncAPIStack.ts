@@ -55,7 +55,7 @@ export class AppSyncAPIStack extends Stack {
         ),
       ],
     });
-    
+
     // graphql api
     const api = new GraphqlApi(this, props.apiId, {
       //project name
@@ -152,6 +152,74 @@ export class AppSyncAPIStack extends Stack {
       },
     });
 
+    // xero get invoice
+    const xeroGetInvoices = new LambdaAppSyncOperationConstruct(
+      this,
+      'XeroGetInvoicesQuery',
+      {
+        api,
+        fieldName: 'xeroGetInvoices',
+        typeName: 'Query',
+        environmentVars: {
+          AUTH_USERPOOLID: props.userPool.userPoolId,
+          FUNCTION_CREATEUSER: props.createUserFuncName,
+          TABLE_USER: props.userTable.tableName,
+          XERO_CLIENT_ID: props.xeroClientId,
+          XERO_CLIENT_SECRET: props.xeroClientSecret,
+          ENV: props.stage,
+        },
+      }
+    );
+
+    xeroGetInvoices.lambda.role?.attachInlinePolicy(
+      new Policy(this, 'XeroGetInvoicesPoolPolicy', {
+        statements: [
+          new PolicyStatement({
+            actions: [
+              'cognito-idp:AdminGetUser',
+              'cognito-idp:AdminCreateUser',
+              'cognito-idp:AdminAddUserToGroup',
+            ],
+            resources: [props.userPool.userPoolArn],
+          }),
+        ],
+      })
+    );
+
+    // xero get invoice
+    const xeroGetInvoiceCount = new LambdaAppSyncOperationConstruct(
+      this,
+      'xeroGetInvoiceCountQuery',
+      {
+        api,
+        fieldName: 'xeroGetInvoiceCount',
+        typeName: 'Query',
+        environmentVars: {
+          AUTH_USERPOOLID: props.userPool.userPoolId,
+          FUNCTION_CREATEUSER: props.createUserFuncName,
+          TABLE_USER: props.userTable.tableName,
+          XERO_CLIENT_ID: props.xeroClientId,
+          XERO_CLIENT_SECRET: props.xeroClientSecret,
+          ENV: props.stage,
+        },
+      }
+    );
+
+    xeroGetInvoiceCount.lambda.role?.attachInlinePolicy(
+      new Policy(this, 'xeroGetInvoiceCountPoolPolicy', {
+        statements: [
+          new PolicyStatement({
+            actions: [
+              'cognito-idp:AdminGetUser',
+              'cognito-idp:AdminCreateUser',
+              'cognito-idp:AdminAddUserToGroup',
+            ],
+            resources: [props.userPool.userPoolArn],
+          }),
+        ],
+      })
+    );
+
     // xero create token set
     const xeroCreateTokenSet = new LambdaAppSyncOperationConstruct(
       this,
@@ -201,6 +269,8 @@ export class AppSyncAPIStack extends Stack {
       })
     );
 
+    props.userTable.grantReadWriteData(xeroGetInvoiceCount.lambda);
+    props.userTable.grantReadWriteData(xeroGetInvoices.lambda);
     props.userTable.grantReadWriteData(xeroCreateTokenSet.lambda);
   }
 }
