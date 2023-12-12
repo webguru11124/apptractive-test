@@ -10,5 +10,10 @@
     "UserPoolId": "us-east-1_vVWDyH5sr",
     "ExportsOutputFnGetAttFULUserPooldev11ACC610Arn7498BECF": "arn:aws:cognito-idp:us-east-1:558086660816:userpool/us-east-1_vVWDyH5sr",
     "IdentityPoolId": "us-east-1:0287f1b9-16b5-499b-9e45-30920fee2be2"
+  },
+  "FULAppSyncAPIStack": {
+    "GraphQLAPIID": "bf3yybkj6jb5jdglws54baued4",
+    "GraphQLAPIURL": "https://gmb2jawixzbqrb23qkwsqkqda4.appsync-api.us-east-1.amazonaws.com/graphql",
+    "GraphQLAPIKey": "da2-rcvhalhjlverjgwg7a7lynyppu"
   }
 }
