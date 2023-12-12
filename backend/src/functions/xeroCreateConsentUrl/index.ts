@@ -19,13 +19,6 @@ export const handler = async (ctx: Context) => {
     throw new Error(err.message);
   }
 
-  try {
-    await xero.initialize();
-  } catch (err: any) {
-    console.log('ERROR initialize xero: ', err);
-    throw new Error(err.message);
-  }
-
   let url;
   try {
     url = await xero.buildConsentUrl();
