@@ -3,7 +3,8 @@ import {
   xeroCreateConsentUrl as XERO_CREATE_CONSENT_URL,
   XeroScopeSet,
 } from '../../graphql';
-import { Box, Button, CircularProgress } from '@mui/material';
+import { Box, Button } from '@mui/material';
+import { Spinner } from '../Spinner';
 
 export const ConnectDisconnectXero = () => {
   const [xeroCreateConsentUrl, { loading }] = useMutation(
@@ -46,8 +47,8 @@ export const ConnectDisconnectXero = () => {
     >
       Connect Xero
       {loading && (
-        <Box sx={{ marginLeft: 2 }}>
-          <CircularProgress color="secondary" size={20} />
+        <Box sx={{ marginLeft: 1 }}>
+          <Spinner size="1.4rem" />
         </Box>
       )}
     </Button>
