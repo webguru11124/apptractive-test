@@ -1,5 +1,5 @@
 import { CacheProvider } from '@emotion/react';
-import { CssBaseline } from '@mui/material';
+import { Button, CssBaseline } from '@mui/material';
 import { DesignSystemContextProvider } from './components';
 import { Amplify } from 'aws-amplify';
 import { getTheme } from './constants/theme';
@@ -11,6 +11,7 @@ import { NavRoutes } from './navigation/NavRoutes';
 import './i18n';
 import cdkOutput from './output.json';
 import { SnackbarProvider } from 'notistack';
+import { ErrorBoundary } from 'react-error-boundary';
 
 const defaultCache = createEmotionCache();
 const theme = getTheme(defaultTheme('light'));
@@ -49,7 +50,22 @@ export function App() {
           <CssBaseline />
           <DesignSystemContextProvider theme={theme}>
             <SnackbarProvider maxSnack={3}>
-              <NavRoutes />
+              <ErrorBoundary
+                fallbackRender={({ resetErrorBoundary }) => (
+                  <div>
+                    There was an error!
+                    <Button
+                      onClick={() => {
+                        resetErrorBoundary();
+                      }}
+                    >
+                      Try again
+                    </Button>
+                  </div>
+                )}
+              >
+                <NavRoutes />
+              </ErrorBoundary>
             </SnackbarProvider>
           </DesignSystemContextProvider>
         </ThemeProvider>

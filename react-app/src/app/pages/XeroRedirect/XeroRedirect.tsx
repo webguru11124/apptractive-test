@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useSearchParams } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
+import { PageContainer } from '../../components';
 
 /* eslint-disable-next-line */
 export interface XeroRedirectProps {}
@@ -18,7 +19,7 @@ export function XeroRedirect(props: XeroRedirectProps) {
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
-  const [xeroCreateTokenSet] = useMutation(gql(XERO_CREATE_TOKEN_SET), {});
+  const [xeroCreateTokenSet] = useMutation(gql`${XERO_CREATE_TOKEN_SET}`, {});
 
   const errorCode = searchParams.get('error');
 
@@ -48,9 +49,7 @@ export function XeroRedirect(props: XeroRedirectProps) {
       };
 
       try {
-        const { data } = await xeroCreateTokenSet(options);
-
-        console.log('data: ', data);
+        await xeroCreateTokenSet(options);
       } catch (err) {
         console.log('ERROR create xero token set', err);
       }
@@ -63,7 +62,10 @@ export function XeroRedirect(props: XeroRedirectProps) {
   }, [xeroCreateTokenSet, errorCode, enqueueSnackbar]);
 
   return (
-    <>
+    <PageContainer>
+      <Typography variant="h1">
+        {t('xeroRedirection', { ns: 'xero' })}
+      </Typography>
       <NavLink to="/dashboard">
         <Button
           sx={{
@@ -83,7 +85,7 @@ export function XeroRedirect(props: XeroRedirectProps) {
           {t('xeroError', { ns: 'xero' })} ({errorCode})
         </Typography>
       )}
-    </>
+    </PageContainer>
   );
 }
 
