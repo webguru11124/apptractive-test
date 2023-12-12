@@ -19,10 +19,12 @@ const GET_INVOICES_QUERY = gql`
 const GET_INVOICE_COUNT_QUERY = gql`
   ${XEROGETINVOICECOUNT}
 `;
+const statues = Object.keys(XeroInvoiceStatus);
 
 export const useXeroInvoices = () => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [statusSelected, setStatusSelected] = React.useState<string[]>(statues);
 
   const { data: xeroInvoices, refetch } =
     useSuspenseQuery<XeroGetInvoicesQueryResult>(GET_INVOICES_QUERY, {
@@ -30,7 +32,7 @@ export const useXeroInvoices = () => {
         input: {
           page: page + 1,
           limit: rowsPerPage,
-          statuses: [XeroInvoiceStatus.AUTHORISED, XeroInvoiceStatus.DELETED],
+          statuses: statusSelected,
         },
       },
     });
@@ -40,6 +42,13 @@ export const useXeroInvoices = () => {
       refetch();
     },
     [refetch]
+  );
+
+  const handleStatusSelectionChange = React.useCallback(
+    (statuses: string[]) => {
+      setStatusSelected(statuses);
+    },
+    []
   );
 
   const handleRowsPerPageChange = React.useCallback(
@@ -54,7 +63,7 @@ export const useXeroInvoices = () => {
     useSuspenseQuery<XeroGetInvoiceCountQueryResult>(GET_INVOICE_COUNT_QUERY, {
       variables: {
         input: {
-          statuses: [XeroInvoiceStatus.AUTHORISED, XeroInvoiceStatus.DELETED],
+          statuses: statusSelected,
         },
       },
     });
@@ -65,5 +74,8 @@ export const useXeroInvoices = () => {
     rowsPerPage,
     setRowsPerPage: handleRowsPerPageChange,
     totalCount: xeroInvoiceCount.xeroGetInvoiceCount,
+    statusSelected,
+    refetch,
+    setStatusSelected: handleStatusSelectionChange,
   };
 };
