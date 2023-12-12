@@ -14,6 +14,7 @@ export const updateUser = /* GraphQL */ `
       createdAt
       updatedAt
       owner
+      tokenSet
     }
   }
 `;
@@ -24,6 +25,14 @@ export const xeroCreateConsentUrl = /* GraphQL */ `
 `;
 export const xeroCreateTokenSet = /* GraphQL */ `
   mutation XeroCreateTokenSet($input: XeroCreateTokenSetInput) {
-    xeroCreateTokenSet(input: $input)
+    xeroCreateTokenSet(input: $input) {
+      token
+      expiresIn
+      user {
+        email
+        givenName
+        familyName
+      }
+    }
   }
 `;

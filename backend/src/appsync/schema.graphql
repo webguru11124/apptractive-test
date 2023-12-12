@@ -11,6 +11,7 @@ type User @aws_iam @aws_cognito_user_pools {
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
   owner: String
+  tokenSet: String
 }
 input UpdateUserInput {
   id: ID!
@@ -140,17 +141,80 @@ type XeroPhone {
   phoneCountryCode: String
 }
 
+type XeroItem {
+  itemID: ID!
+  name: String!
+  code: String!
+}
+
+type XeroTrackingCategory {
+  trackingCategoryID: ID!
+  name: String!
+  option: String!
+}
+
+type XeroPayment {
+  date: String!
+  amount: Float!
+  paymentID: ID!
+}
+
+type XeroInvoice {
+  type: String!
+  contact: XeroContact!
+  date: String
+  dueDate: String
+  status: String!
+  lineAmountTypes: String!
+  lineItems: [XeroLineItem]
+  subTotal: Float!
+  totalTax: Float!
+  total: Float!
+  currencyCode: String!
+  invoiceID: ID!
+  invoiceNumber: String!
+  amountDue: Float!
+  amountPaid: Float!
+  amountCredited: Float!
+  payments: [XeroPayment]
+}
+
+input GetInvoiceInput {
+  page: Int
+  limit: Int
+  statuses: [XeroInvoiceStatus]
+}
+
+type TokenSet {
+  id_token: String!
+  access_token: String!
+  expires_at: Int!
+  refresh_token: String!
+  scope: [String]
+}
+
+input GetInvoiceCountInput {
+  statuses: [XeroInvoiceStatus]
+}
+
 # ****************************************************************************
 # QUERIES
 # ****************************************************************************
 
 type Query {
-
   # USERS
   getUser(id: ID!): User @aws_iam @aws_cognito_user_pools
 
   # XERO
+  xeroGetInvoices(input: GetInvoiceInput!): [XeroInvoice]
+    @aws_iam
+    @aws_cognito_user_pools
+    @aws_api_key
 
+  xeroGetInvoiceCount(input: GetInvoiceCountInput): Int!
+    @aws_iam
+    @aws_cognito_user_pools
+    @aws_api_key
 }
 
 # ****************************************************************************
@@ -166,10 +230,9 @@ type Mutation {
     @aws_iam
     @aws_cognito_user_pools
     @aws_api_key
-  xeroCreateTokenSet(input: XeroCreateTokenSetInput): String
-    @aws_iam
-    @aws_cognito_user_pools
-    @aws_api_key
+  xeroCreateTokenSet(
+    input: XeroCreateTokenSetInput
+  ): XeroCreateTokenSetResponse @aws_iam @aws_cognito_user_pools @aws_api_key
 }
 
 input ModelStringInput {
