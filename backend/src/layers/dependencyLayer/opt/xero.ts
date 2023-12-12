@@ -25,7 +25,7 @@ interface InitXeroProps {
  * @param httpTimeout
  * @param grantType
  */
-export const initXeroClient = ({
+export const initXeroClient = async ({
   redirectUris = ['https://localhost:4200/xero-redirect'],
   scopes,
   httpTimeout = 2000,
@@ -39,7 +39,7 @@ export const initXeroClient = ({
     throw new Error('XERO_CLIENT_SECRET not set');
   }
 
-  return new XeroClient({
+  const xero = new XeroClient({
     clientId: XERO_CLIENT_ID,
     clientSecret: XERO_CLIENT_SECRET,
     redirectUris,
@@ -47,6 +47,13 @@ export const initXeroClient = ({
     grantType,
     httpTimeout,
   });
+  try {
+    await xero.initialize();
+  } catch (err: any) {
+    console.log('ERROR initialize xero: ', err);
+    throw new Error(err.message);
+  }
+  return xero;
 };
 
 export const getScopes = (scopeSet: string) => {
