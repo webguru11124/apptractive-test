@@ -180,8 +180,8 @@ type XeroInvoice {
 }
 
 input GetInvoiceInput {
-  page: Int
-  limit: Int
+  startPage: Int
+  pageCount: Int
   statuses: [XeroInvoiceStatus]
 }
 
@@ -193,10 +193,6 @@ type TokenSet {
   scope: [String]
 }
 
-input GetInvoiceCountInput {
-  statuses: [XeroInvoiceStatus]
-}
-
 # ****************************************************************************
 # QUERIES
 # ****************************************************************************
@@ -206,12 +202,7 @@ type Query {
   getUser(id: ID!): User @aws_iam @aws_cognito_user_pools
 
   # XERO
-  xeroGetInvoices(input: GetInvoiceInput!): [XeroInvoice]
-    @aws_iam
-    @aws_cognito_user_pools
-    @aws_api_key
-
-  xeroGetInvoiceCount(input: GetInvoiceCountInput): Int!
+  xeroGetInvoices(input: GetInvoiceInput!): [XeroInvoice]!
     @aws_iam
     @aws_cognito_user_pools
     @aws_api_key

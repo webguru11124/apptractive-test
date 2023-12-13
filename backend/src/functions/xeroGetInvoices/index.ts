@@ -1,4 +1,4 @@
-import { User } from '/opt/API';
+import { User, XeroInvoice } from '/opt/API';
 import { getRecord, updateRecord } from '/opt/dynamoDB';
 import { initXeroClient } from '/opt/xero';
 import { AppSyncIdentityCognito, Context } from '@aws-appsync/utils';
@@ -15,10 +15,11 @@ type TokenSet = {
 export const handler = async (ctx: Context) => {
   const { sub } = ctx.identity as AppSyncIdentityCognito;
   const { input } = ctx.arguments;
-  const { page, limit, statuses } = input;
+  const { startPage = 1, pageCount = 1, statuses } = input;
 
   console.log('sub: ', sub);
-  console.log('page: ', page);
+  console.log('startPage: ', startPage);
+  console.log('pageCount: ', pageCount);
   console.log('statuses: ', statuses);
 
   const item: User = await getRecord(TABLE_USER ?? '', { id: sub });
@@ -47,17 +48,12 @@ export const handler = async (ctx: Context) => {
   const xeroTenantId = xero.tenants[0].tenantId;
 
   try {
-    // Get the total number of items to fetch
-    const totalItemsToFetch = page * limit;
-    // Calculate how many items to skip
-    const skipItems = (page - 1) * limit;
+    const allInvoices: XeroInvoice[] = [];
 
-    // Declare an array to store all fetched invoices
-    let allInvoices = [];
-
-    // Loop to fetch items in chunks of 100
-    for (let i = 0; i < totalItemsToFetch; i += 100) {
-      const response = await xero.accountingApi.getInvoices(
+    for (let i = startPage; i < startPage + pageCount; i++) {
+      const {
+        body: { invoices },
+      } = await xero.accountingApi.getInvoices(
         xeroTenantId,
         undefined,
         undefined,
@@ -66,15 +62,12 @@ export const handler = async (ctx: Context) => {
         undefined,
         undefined,
         statuses,
-        i / 100 + 1 // The page number in Xero's API terms
+        i // The page number in Xero's API terms
       );
-      allInvoices = [...allInvoices, ...response.body.invoices];
+      allInvoices.push(...invoices);
     }
 
-    // Filter the items according to the page and limit
-    const resultInvoices = allInvoices.slice(skipItems, skipItems + limit);
-
-    return resultInvoices;
+    return allInvoices;
   } catch (err) {
     const error = JSON.stringify(err.response.body, null, 2);
     console.log(`Status Code: ${err.response.statusCode} => ${error}`);
