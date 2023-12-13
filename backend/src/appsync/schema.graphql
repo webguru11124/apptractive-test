@@ -183,6 +183,8 @@ input GetInvoiceInput {
   startPage: Int
   pageCount: Int
   statuses: [XeroInvoiceStatus]
+  where: String
+  order: String
 }
 
 type TokenSet {

@@ -15,7 +15,7 @@ type TokenSet = {
 export const handler = async (ctx: Context) => {
   const { sub } = ctx.identity as AppSyncIdentityCognito;
   const { input } = ctx.arguments;
-  const { startPage = 1, pageCount = 1, statuses } = input;
+  const { startPage = 1, pageCount = 1, statuses, where, order } = input;
 
   console.log('sub: ', sub);
   console.log('startPage: ', startPage);
@@ -56,8 +56,8 @@ export const handler = async (ctx: Context) => {
       } = await xero.accountingApi.getInvoices(
         xeroTenantId,
         undefined,
-        undefined,
-        undefined,
+        where,
+        order,
         undefined,
         undefined,
         undefined,

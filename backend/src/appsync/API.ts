@@ -55,6 +55,8 @@ export type GetInvoiceInput = {
   startPage?: number | null,
   pageCount?: number | null,
   statuses?: Array< XeroInvoiceStatus | null > | null,
+  where?: string | null,
+  order?: string | null,
 };
 
 export enum XeroInvoiceStatus {
