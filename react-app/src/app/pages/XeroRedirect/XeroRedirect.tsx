@@ -62,14 +62,16 @@ export function XeroRedirect(props: XeroRedirectProps) {
     };
 
     if (!errorCode) {
-      enqueueSnackbar('Xero Connected!', { variant: 'success' });
+      enqueueSnackbar(t('xeroConnected', { ns: 'xero' }), {
+        variant: 'success',
+      });
       createTokenSet();
     }
-  }, [xeroCreateTokenSet, errorCode, enqueueSnackbar]);
+  }, [xeroCreateTokenSet, errorCode, t, enqueueSnackbar]);
 
   return (
     <PageContainer>
-      <Typography variant="h1">
+      <Typography variant="h3">
         {t('xeroRedirection', { ns: 'xero' })}
       </Typography>
       <NavLink to="/dashboard">
@@ -83,7 +85,7 @@ export function XeroRedirect(props: XeroRedirectProps) {
             color: '#FFF',
           }}
         >
-          Go to Dashboard
+          {t('goToDashboard', { ns: 'common' })}
         </Button>
       </NavLink>
       {errorCode && (

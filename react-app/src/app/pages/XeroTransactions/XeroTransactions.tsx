@@ -11,7 +11,7 @@ export function XeroTransactions() {
 
   return (
     <PageContainer>
-      <Typography variant="h1">
+      <Typography variant="h3">
         {t('xeroTransactions', { ns: 'xero' })}
       </Typography>
       <Suspense fallback={<Spinner />}>

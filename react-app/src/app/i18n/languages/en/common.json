@@ -68,6 +68,7 @@
   "getCodeTitle": "Get code",
   "getStartedTitle": "Get Started",
   "goBack": "Go back",
+  "goToDashboard":"Go to Dashboard",
   "helloTitle": "Hello",
   "hour": "hour",
   "hours": "hours",
@@ -165,5 +166,6 @@
   "emailNotificationsTitle": "Email notifications",
   "featuresTitle": "Features",
   "pushNotificationsTitle": "Push notifications",
-  "smsNotificationsTitle": "SMS notifications"
+  "smsNotificationsTitle": "SMS notifications",
+  "tryAgain":"Try again"
 }

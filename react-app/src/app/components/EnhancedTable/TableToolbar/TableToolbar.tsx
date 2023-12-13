@@ -4,6 +4,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { IconButton, Tooltip } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
@@ -12,7 +13,7 @@ interface EnhancedTableToolbarProps {
 
 export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
   const { numSelected } = props;
-
+  const { t } = useTranslation();
   return (
     <Toolbar
       sx={{
@@ -34,7 +35,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           variant="subtitle1"
           component="div"
         >
-          {numSelected} selected
+          {`${numSelected} ${t('selected', { ns: 'common' })}`}
         </Typography>
       ) : (
         <Typography
@@ -43,10 +44,10 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           id="tableTitle"
           component="div"
         >
-          Invoices
+          {t('invoices', { ns: 'xero' })}
         </Typography>
       )}
-      <Tooltip title="Filter list">
+      <Tooltip title={t('filterList', { ns: 'table' })}>
         <IconButton
           onClick={(event) => props.onFilterClick && props.onFilterClick(event)}
         >

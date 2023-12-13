@@ -12,7 +12,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import { EnhancedTableHead } from './TableHead/TableHead';
 import { EnhancedTableToolbar } from './TableToolbar/TableToolbar';
-import { convertColumnNamesToDisplayText } from '../../helpers';
+import { useTranslation } from 'react-i18next';
 
 interface EnhancedTableProps<T extends object> {
   rows: T[];
@@ -34,7 +34,7 @@ export function EnhancedTable<T extends object>({
   columns,
   onFilterClick,
 }: EnhancedTableProps<T>) {
-  console.log(rows);
+  const { t } = useTranslation();
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [dense, setDense] = React.useState(false);
 
@@ -84,21 +84,30 @@ export function EnhancedTable<T extends object>({
   const isSelected = (id: number) => selected.indexOf(id) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows = page > 0 ? Math.max(0, rowsPerPage - rows.length) : 0;
+
+  let emptyRows = Math.max(0, rowsPerPage - rows.length);
+  if (page === 0 && emptyRows > 0) emptyRows = -1;
+
+  const count =
+    emptyRows > 0
+      ? page * rowsPerPage + rows.length
+      : emptyRows === -1
+      ? rows.length
+      : -1;
 
   const visibleRows: T[] = React.useMemo(
     () => rows.slice(0, rowsPerPage),
     [rows, rowsPerPage]
   );
   const headerCells = columns.map((key) => ({
-    label: convertColumnNamesToDisplayText(key as string),
+    label: t(key as string, { ns: 'xero' }),
     numeric: 'center' as 'right' | 'left' | 'center',
   }));
 
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar
+        <EnhancedTableToolbar 
           numSelected={selected.length}
           onFilterClick={onFilterClick}
         />
@@ -164,9 +173,8 @@ export function EnhancedTable<T extends object>({
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={-1}
+          count={count}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -175,7 +183,7 @@ export function EnhancedTable<T extends object>({
       </Paper>
       <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
+        label={t('densePadding', { ns: 'table' })}
       />
     </Box>
   );

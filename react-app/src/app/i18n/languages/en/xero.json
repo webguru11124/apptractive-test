@@ -6,6 +6,7 @@
   "amountPaid": "Amount Paid",
   "amountDue": "Amount Due",
   "total": "Total",
+  "status":"Status",
   "totalTax": "Total Tax",
   "xeroRedirection": "Xero Direction Page",
   "xeroTransactions": "Xero Transactions",
@@ -13,5 +14,7 @@
   "emailAddress": "Email Address",
   "contactNumber": "Contact Number",
   "contactStatus": "Contact Status",
-  "xeroContacts": "Xero Contacts"
+  "xeroContacts": "Xero Contacts",
+  "xeroConnected":"Xero Connected!",
+  "invoices":"Invoices"
 }
