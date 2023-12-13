@@ -10,8 +10,9 @@ import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import { EnhancedTableHead } from './TableHead';
-import { EnhancedTableToolbar } from './TableToolbar';
+import { EnhancedTableHead } from './TableHead/TableHead';
+import { EnhancedTableToolbar } from './TableToolbar/TableToolbar';
+import { convertColumnNamesToDisplayText } from '../../helpers';
 
 interface EnhancedTableProps<T extends object> {
   rows: T[];
@@ -19,7 +20,7 @@ interface EnhancedTableProps<T extends object> {
   page: number;
   rowsPerPage: number;
   setPage: (page: number) => void;
-  totalCount: number;
+  totalCount?: number;
   setRowsPerPage: (page: number) => void;
   onFilterClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
@@ -28,7 +29,6 @@ export function EnhancedTable<T extends object>({
   rows,
   page,
   setPage,
-  totalCount,
   rowsPerPage,
   setRowsPerPage,
   columns,
@@ -91,7 +91,7 @@ export function EnhancedTable<T extends object>({
     [rows, rowsPerPage]
   );
   const headerCells = columns.map((key) => ({
-    label: key as string,
+    label: convertColumnNamesToDisplayText(key as string),
     numeric: 'center' as 'right' | 'left' | 'center',
   }));
 
@@ -166,7 +166,7 @@ export function EnhancedTable<T extends object>({
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={totalCount}
+          count={-1}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

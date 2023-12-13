@@ -4,20 +4,13 @@ import {
   xeroGetInvoices as XEROGETINVOICES,
   XeroInvoice,
   XeroInvoiceStatus,
-  xeroGetInvoiceCount as XEROGETINVOICECOUNT,
-} from '../../graphql';
+} from '../../../graphql';
 interface XeroGetInvoicesQueryResult {
   xeroGetInvoices: XeroInvoice[];
-}
-interface XeroGetInvoiceCountQueryResult {
-  xeroGetInvoiceCount: number;
 }
 
 const GET_INVOICES_QUERY = gql`
   ${XEROGETINVOICES}
-`;
-const GET_INVOICE_COUNT_QUERY = gql`
-  ${XEROGETINVOICECOUNT}
 `;
 const statues = Object.keys(XeroInvoiceStatus);
 
@@ -26,16 +19,32 @@ export const useXeroInvoices = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [statusSelected, setStatusSelected] = React.useState<string[]>(statues);
 
+  const firstInvoiceNumber = (page - 1) * rowsPerPage; // Convert page number to invoice number
+  const startPage = Math.floor(firstInvoiceNumber / 100) + 1; // Determine which page to start from in Xero
+  const endInvoiceNumber = firstInvoiceNumber + rowsPerPage;
+  const endPage = Math.ceil(endInvoiceNumber / 100); // Determine which page to end at in Xero
+  const totalAPIPagesToFetch = endPage - startPage + 1; // Total API pages to fetch
+
   const { data: xeroInvoices, refetch } =
     useSuspenseQuery<XeroGetInvoicesQueryResult>(GET_INVOICES_QUERY, {
       variables: {
         input: {
-          page: page + 1,
-          limit: rowsPerPage,
+          startPage,
+          pageCount: totalAPIPagesToFetch,
           statuses: statusSelected,
         },
       },
     });
+
+  const data = React.useMemo(
+    () =>
+      xeroInvoices.xeroGetInvoices.slice(
+        firstInvoiceNumber - startPage * 100,
+        firstInvoiceNumber - startPage * 100 + rowsPerPage
+      ),
+    [firstInvoiceNumber, rowsPerPage, startPage, xeroInvoices.xeroGetInvoices]
+  );
+
   const handlePageChange = React.useCallback(
     (newPage: number) => {
       setPage(newPage);
@@ -59,21 +68,12 @@ export const useXeroInvoices = () => {
     []
   );
 
-  const { data: xeroInvoiceCount } =
-    useSuspenseQuery<XeroGetInvoiceCountQueryResult>(GET_INVOICE_COUNT_QUERY, {
-      variables: {
-        input: {
-          statuses: statusSelected,
-        },
-      },
-    });
   return {
-    data: xeroInvoices.xeroGetInvoices,
+    data,
     page,
     setPage: handlePageChange,
     rowsPerPage,
     setRowsPerPage: handleRowsPerPageChange,
-    totalCount: xeroInvoiceCount.xeroGetInvoiceCount,
     statusSelected,
     refetch,
     setStatusSelected: handleStatusSelectionChange,

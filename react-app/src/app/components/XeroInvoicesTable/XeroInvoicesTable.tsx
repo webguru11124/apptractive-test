@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { XeroInvoice, XeroInvoiceStatus } from '../../graphql';
-import { EnhancedTable } from '../EnhancedTable.tsx';
-import { useXeroInvoices } from './useXeroInvoices';
+import { EnhancedTable } from '../EnhancedTable/EnhancedTable';
+import { useXeroInvoices } from './hook/useXeroInvoices';
 import MenuItem from '@mui/material/MenuItem';
 import { Checkbox, ListItemText, Menu } from '@mui/material';
 
-const filterdKeys: (keyof XeroInvoice)[] = [
+const columns: (keyof XeroInvoice)[] = [
   'status',
   'totalTax',
   'total',
@@ -20,7 +20,6 @@ export function XeroInvoicesTable() {
     page,
     setPage,
     rowsPerPage,
-    totalCount,
     setRowsPerPage,
     data,
     setStatusSelected,
@@ -50,13 +49,12 @@ export function XeroInvoicesTable() {
   return (
     <>
       <EnhancedTable<XeroInvoice>
-        columns={filterdKeys}
+        columns={columns}
         page={page}
         setPage={setPage}
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
         rows={data}
-        totalCount={totalCount}
         onFilterClick={handleClick}
       />
       <Menu
