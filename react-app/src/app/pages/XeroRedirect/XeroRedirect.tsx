@@ -1,3 +1,4 @@
+import React from 'react';
 import { gql, useMutation } from '@apollo/client';
 import { OperationVariables } from '@apollo/client/core/types';
 import {
@@ -19,7 +20,12 @@ export function XeroRedirect(props: XeroRedirectProps) {
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
-  const [xeroCreateTokenSet] = useMutation(gql`${XERO_CREATE_TOKEN_SET}`, {});
+  const [xeroCreateTokenSet] = useMutation(
+    gql`
+      ${XERO_CREATE_TOKEN_SET}
+    `,
+    {}
+  );
 
   const errorCode = searchParams.get('error');
 

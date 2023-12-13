@@ -1,3 +1,4 @@
+import React from 'react';
 import { gql, useMutation } from '@apollo/client';
 import {
   xeroCreateConsentUrl as XERO_CREATE_CONSENT_URL,

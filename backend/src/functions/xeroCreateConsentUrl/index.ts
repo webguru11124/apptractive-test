@@ -11,7 +11,7 @@ export const handler = async (ctx: Context) => {
 
   let xero;
   try {
-    xero = initXeroClient({
+    xero = await initXeroClient({
       scopes: scopes.split(' '),
     });
   } catch (err: any) {
