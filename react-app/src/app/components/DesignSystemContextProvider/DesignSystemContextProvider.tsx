@@ -1,13 +1,27 @@
-import { Breakpoint, Theme, useMediaQuery } from '@mui/material';
-import React, { createContext, ReactNode } from 'react';
+import { Breakpoint, Theme,  } from '@mui/material';
+import React, { createContext, ReactNode, useEffect, useState } from 'react';
 import { getTheme } from '../../constants/theme';
 
 const useWidth = (theme: Theme) => {
+  const [width, setWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   const keys = [...theme.breakpoints.keys].reverse();
+
   return (
     keys.reduce((output: string | undefined, key: Breakpoint) => {
-      const matches = useMediaQuery(theme.breakpoints.up(key));
-      return !output && matches ? key : output;
+      const breakpointWidth = theme.breakpoints.values[key];
+      return !output && width >= breakpointWidth ? key : output;
     }, undefined) || 'xs'
   );
 };
