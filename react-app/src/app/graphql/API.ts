@@ -52,9 +52,11 @@ export type XeroCreateTokenSetUser = {
 };
 
 export type GetInvoiceInput = {
-  page?: number | null,
-  limit?: number | null,
+  startPage?: number | null,
+  pageCount?: number | null,
   statuses?: Array< XeroInvoiceStatus | null > | null,
+  where?: string | null,
+  order?: string | null,
 };
 
 export enum XeroInvoiceStatus {
@@ -176,10 +178,6 @@ export type XeroPayment = {
   paymentID: string,
 };
 
-export type GetInvoiceCountInput = {
-  statuses?: Array< XeroInvoiceStatus | null > | null,
-};
-
 export type UpdateUserMutationVariables = {
   input?: UpdateUserInput | null,
 };
@@ -251,7 +249,7 @@ export type XeroGetInvoicesQueryVariables = {
 };
 
 export type XeroGetInvoicesQuery = {
-  xeroGetInvoices?:  Array< {
+  xeroGetInvoices:  Array< {
     __typename: "XeroInvoice",
     type: string,
     contact:  {
@@ -319,13 +317,5 @@ export type XeroGetInvoicesQuery = {
       amount: number,
       paymentID: string,
     } | null > | null,
-  } | null > | null,
-};
-
-export type XeroGetInvoiceCountQueryVariables = {
-  input?: GetInvoiceCountInput | null,
-};
-
-export type XeroGetInvoiceCountQuery = {
-  xeroGetInvoiceCount: number,
+  } | null >,
 };

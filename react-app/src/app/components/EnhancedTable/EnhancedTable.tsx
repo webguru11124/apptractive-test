@@ -13,9 +13,10 @@ import Switch from '@mui/material/Switch';
 import { EnhancedTableHead } from './TableHead/TableHead';
 import { EnhancedTableToolbar } from './TableToolbar/TableToolbar';
 import { useTranslation } from 'react-i18next';
+import { Spinner } from '../Spinner';
 
 interface EnhancedTableProps<T extends object> {
-  rows: T[];
+  rows: undefined | T[];
   columns: (keyof T)[];
   page: number;
   rowsPerPage: number;
@@ -40,7 +41,7 @@ export function EnhancedTable<T extends object>({
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n, index) => index);
+      const newSelected = rows?.map((n, index) => index) ?? [];
       setSelected(newSelected);
       return;
     }
@@ -85,18 +86,19 @@ export function EnhancedTable<T extends object>({
 
   // Avoid a layout jump when reaching the last page with empty rows.
 
-  let emptyRows = Math.max(0, rowsPerPage - rows.length);
-  if (page === 0 && emptyRows > 0) emptyRows = -1;
-
-  const count =
-    emptyRows > 0
+  let emptyRows =
+    rows !== undefined ? Math.max(0, rowsPerPage - rows.length) : rowsPerPage;
+  if (rows !== undefined && page === 0 && emptyRows > 0) emptyRows = -1;
+  const count = rows
+    ? emptyRows > 0
       ? page * rowsPerPage + rows.length
       : emptyRows === -1
       ? rows.length
-      : -1;
+      : -1
+    : 0;
 
-  const visibleRows: T[] = React.useMemo(
-    () => rows.slice(0, rowsPerPage),
+  const visibleRows: T[] | undefined = React.useMemo(
+    () => rows?.slice(0, rowsPerPage),
     [rows, rowsPerPage]
   );
   const headerCells = columns.map((key) => ({
@@ -107,7 +109,7 @@ export function EnhancedTable<T extends object>({
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar 
+        <EnhancedTableToolbar
           numSelected={selected.length}
           onFilterClick={onFilterClick}
         />
@@ -121,55 +123,60 @@ export function EnhancedTable<T extends object>({
               numSelected={selected.length}
               headerCells={headerCells}
               onSelectAllClick={handleSelectAllClick}
-              rowCount={rows.length}
+              rowCount={rows?.length ?? 0}
             />
-            <TableBody>
-              {visibleRows.map((row: T, index) => {
-                const isItemSelected = isSelected(index);
-                const labelId = `enhanced-table-checkbox-${index}`;
+            {
+              <TableBody>
+                {visibleRows &&
+                  visibleRows.map((row: T, index) => {
+                    const isItemSelected = isSelected(index);
+                    const labelId = `enhanced-table-checkbox-${index}`;
 
-                return (
+                    return (
+                      <TableRow
+                        hover
+                        onClick={(event) => handleClick(event, index)}
+                        role="checkbox"
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={index}
+                        selected={isItemSelected}
+                        sx={{ cursor: 'pointer' }}
+                      >
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            color="primary"
+                            checked={isItemSelected}
+                            inputProps={{
+                              'aria-labelledby': labelId,
+                            }}
+                          />
+                        </TableCell>
+                        {Object.keys(row)
+                          .filter((key) => columns.includes(key as keyof T))
+                          .map((key: string, index: number) => (
+                            <React.Fragment key={index}>
+                              <TableCell align="right">
+                                {row[key as keyof T] as React.ReactNode}
+                              </TableCell>
+                            </React.Fragment>
+                          ))}
+                      </TableRow>
+                    );
+                  })}
+                {emptyRows > 0 && (
                   <TableRow
-                    hover
-                    onClick={(event) => handleClick(event, index)}
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={index}
-                    selected={isItemSelected}
-                    sx={{ cursor: 'pointer' }}
+                    style={{
+                      height: (dense ? 33 : 53) * emptyRows,
+                    }}
                   >
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        color="primary"
-                        checked={isItemSelected}
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
-                      />
+                    <TableCell colSpan={6}>
+                      {rows === undefined && <Spinner />}
                     </TableCell>
-                    {Object.keys(row)
-                      .filter((key) => columns.includes(key as keyof T))
-                      .map((key: string, index: number) => (
-                        <React.Fragment key={index}>
-                          <TableCell align="right">
-                            {row[key as keyof T] as React.ReactNode}
-                          </TableCell>
-                        </React.Fragment>
-                      ))}
                   </TableRow>
-                );
-              })}
-              {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: (dense ? 33 : 53) * emptyRows,
-                  }}
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
+                )}
+              </TableBody>
+            }
           </Table>
         </TableContainer>
         <TablePagination

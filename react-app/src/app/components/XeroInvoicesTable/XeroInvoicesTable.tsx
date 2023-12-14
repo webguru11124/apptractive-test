@@ -24,6 +24,7 @@ export function XeroInvoicesTable() {
     data,
     setStatusSelected,
     statusSelected,
+    refetch,
   } = useXeroInvoices();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -33,6 +34,7 @@ export function XeroInvoicesTable() {
   };
   const handleClose = () => {
     setAnchorEl(null);
+    refetch();
   };
 
   const handleStatusSelected = (status: string) => {
