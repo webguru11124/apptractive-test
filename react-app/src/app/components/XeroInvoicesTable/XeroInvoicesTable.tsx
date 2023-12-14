@@ -6,11 +6,11 @@ import MenuItem from '@mui/material/MenuItem';
 import { Checkbox, ListItemText, Menu } from '@mui/material';
 
 const columns: (keyof XeroInvoice)[] = [
-  'status',
+  'invoiceNumber',
   'totalTax',
   'total',
-  'invoiceNumber',
   'amountPaid',
+  'status',
 ];
 
 const statues = Object.keys(XeroInvoiceStatus);

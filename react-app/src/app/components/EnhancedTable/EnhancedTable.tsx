@@ -105,8 +105,17 @@ export function EnhancedTable<T extends object>({
     : 0;
 
   const visibleRows: T[] | undefined = React.useMemo(
-    () => rows?.slice(0, rowsPerPage),
-    [rows, rowsPerPage]
+    () =>
+      rows
+        ?.slice(0, rowsPerPage)
+        .map(
+          (row) =>
+            columns.reduce(
+              (obj, column) => ({ ...obj, [column]: row[column] }),
+              {}
+            ) as T
+        ),
+    [columns, rows, rowsPerPage]
   );
   const headerCells = columns.map((key) => ({
     id: key as string,
@@ -163,15 +172,13 @@ export function EnhancedTable<T extends object>({
                             }}
                           />
                         </TableCell>
-                        {Object.keys(row)
-                          .filter((key) => columns.includes(key as keyof T))
-                          .map((key: string, index: number) => (
-                            <React.Fragment key={index}>
-                              <TableCell align="right">
-                                {row[key as keyof T] as React.ReactNode}
-                              </TableCell>
-                            </React.Fragment>
-                          ))}
+                        {Object.keys(row).map((key: string, index: number) => (
+                          <React.Fragment key={index}>
+                            <TableCell align="right">
+                              {row[key as keyof T] as React.ReactNode}
+                            </TableCell>
+                          </React.Fragment>
+                        ))}
                       </TableRow>
                     );
                   })}
