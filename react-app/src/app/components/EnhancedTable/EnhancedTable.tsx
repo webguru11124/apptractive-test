@@ -14,6 +14,7 @@ import { EnhancedTableHead } from './TableHead/TableHead';
 import { EnhancedTableToolbar } from './TableToolbar/TableToolbar';
 import { useTranslation } from 'react-i18next';
 import { Spinner } from '../Spinner';
+import { Order } from './TableHead/type';
 
 interface EnhancedTableProps<T extends object> {
   rows: undefined | T[];
@@ -22,6 +23,9 @@ interface EnhancedTableProps<T extends object> {
   rowsPerPage: number;
   setPage: (page: number) => void;
   totalCount?: number;
+  orderBy?: string;
+  order?: Order;
+  onChangeOrder?: (event: React.MouseEvent<unknown>, property: string) => void;
   setRowsPerPage: (page: number) => void;
   onFilterClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
@@ -34,6 +38,9 @@ export function EnhancedTable<T extends object>({
   setRowsPerPage,
   columns,
   onFilterClick,
+  order,
+  orderBy,
+  onChangeOrder,
 }: EnhancedTableProps<T>) {
   const { t } = useTranslation();
   const [selected, setSelected] = React.useState<readonly number[]>([]);
@@ -102,6 +109,7 @@ export function EnhancedTable<T extends object>({
     [rows, rowsPerPage]
   );
   const headerCells = columns.map((key) => ({
+    id: key as string,
     label: t(key as string, { ns: 'xero' }),
     numeric: 'center' as 'right' | 'left' | 'center',
   }));
@@ -121,6 +129,9 @@ export function EnhancedTable<T extends object>({
           >
             <EnhancedTableHead
               numSelected={selected.length}
+              order={order}
+              orderBy={orderBy}
+              onChangeOrder={onChangeOrder}
               headerCells={headerCells}
               onSelectAllClick={handleSelectAllClick}
               rowCount={rows?.length ?? 0}

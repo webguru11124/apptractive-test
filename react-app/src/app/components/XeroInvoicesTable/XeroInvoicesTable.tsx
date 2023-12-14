@@ -22,6 +22,9 @@ export function XeroInvoicesTable() {
     rowsPerPage,
     setRowsPerPage,
     data,
+    order,
+    orderBy,
+    setOrder,
     setStatusSelected,
     statusSelected,
     refetch,
@@ -57,6 +60,9 @@ export function XeroInvoicesTable() {
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
         rows={data}
+        order={order}
+        orderBy={orderBy}
+        onChangeOrder={setOrder}
         onFilterClick={handleClick}
       />
       <Menu

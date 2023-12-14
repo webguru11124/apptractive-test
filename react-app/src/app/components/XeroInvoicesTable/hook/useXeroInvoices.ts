@@ -5,6 +5,7 @@ import {
   XeroInvoice,
   XeroInvoiceStatus,
 } from '../../../graphql';
+import { Order } from '../../EnhancedTable/TableHead/type';
 interface XeroGetInvoicesQueryResult {
   xeroGetInvoices: XeroInvoice[];
 }
@@ -15,6 +16,8 @@ const GET_INVOICES_QUERY = gql`
 const statues = Object.keys(XeroInvoiceStatus);
 
 export const useXeroInvoices = () => {
+  const [order, setOrder] = React.useState<Order>('asc');
+  const [orderBy, setOrderBy] = React.useState<keyof XeroInvoice | undefined>();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [statusSelected, setStatusSelected] = React.useState<string[]>(statues);
@@ -26,6 +29,8 @@ export const useXeroInvoices = () => {
   const endPage = Math.ceil(endInvoiceNumber / 100); // Determine which page to end at in Xero
   const totalAPIPagesToFetch = endPage - startPage + 1; // Total API pages to fetch
 
+  const apiOrder = orderBy ? `${orderBy} ${order.toUpperCase()}` : undefined;
+
   const { data, refetch } = useQuery<XeroGetInvoicesQueryResult>(
     GET_INVOICES_QUERY,
     {
@@ -34,6 +39,7 @@ export const useXeroInvoices = () => {
           startPage,
           pageCount: totalAPIPagesToFetch,
           where,
+          order: apiOrder,
         },
       },
     }
@@ -83,6 +89,15 @@ export const useXeroInvoices = () => {
     []
   );
 
+  const changeOrder = React.useCallback(
+    (event: React.MouseEvent<unknown>, property: string) => {
+      const isAsc = orderBy === property && order === 'asc';
+      setOrder(isAsc ? 'desc' : 'asc');
+      setOrderBy(property as keyof XeroInvoice);
+    },
+    [order, orderBy]
+  );
+
   return {
     data: invoices,
     page,
@@ -92,5 +107,8 @@ export const useXeroInvoices = () => {
     statusSelected,
     refetch: refetchQuery,
     setStatusSelected: handleStatusSelectionChange,
+    order,
+    orderBy,
+    setOrder: changeOrder,
   };
 };

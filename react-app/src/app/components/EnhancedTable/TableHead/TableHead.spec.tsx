@@ -8,9 +8,21 @@ afterEach(cleanup);
 describe('EnhancedTableHead Component', () => {
   test('renders the correct number of headers', () => {
     const headerCells = [
-      { label: 'Header 1', numeric: 'left' as 'left' | 'center' | 'right' },
-      { label: 'Header 2', numeric: 'center' as 'left' | 'center' | 'right' },
-      { label: 'Header 3', numeric: 'right' as 'left' | 'center' | 'right' },
+      {
+        id: 'header1',
+        label: 'Header 1',
+        numeric: 'left' as 'left' | 'center' | 'right',
+      },
+      {
+        id: 'header2',
+        label: 'Header 2',
+        numeric: 'center' as 'left' | 'center' | 'right',
+      },
+      {
+        id: 'header3',
+        label: 'Header 3',
+        numeric: 'right' as 'left' | 'center' | 'right',
+      },
     ];
 
     const { getAllByRole } = render(

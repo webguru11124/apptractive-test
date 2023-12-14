@@ -1,19 +1,47 @@
 import React from 'react';
-import { Checkbox, TableCell, TableRow } from '@mui/material';
+import {
+  Box,
+  Checkbox,
+  TableCell,
+  TableRow,
+  TableSortLabel,
+} from '@mui/material';
 import TableHead from '@mui/material/TableHead';
+import { visuallyHidden } from '@mui/utils';
+import { Order } from './type';
+
+type Numeric = 'right' | 'left' | 'center';
+
 type HeaderCell = {
+  id: string;
   label: string;
-  numeric: 'right' | 'left' | 'center';
+  numeric: Numeric;
 };
 interface EnhancedTableProps {
   numSelected: number;
+
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   rowCount: number;
   headerCells: HeaderCell[];
+  orderBy?: string;
+  order?: Order;
+  onChangeOrder?: (event: React.MouseEvent<unknown>, property: string) => void;
 }
 
 export function EnhancedTableHead(props: EnhancedTableProps) {
-  const { onSelectAllClick, numSelected, rowCount } = props;
+  const {
+    onSelectAllClick,
+    numSelected,
+    rowCount,
+    headerCells,
+    orderBy,
+    order,
+    onChangeOrder,
+  } = props;
+  const createSortHandler =
+    (property: string) => (event: React.MouseEvent<unknown>) => {
+      onChangeOrder && onChangeOrder(event, property);
+    };
   return (
     <TableHead>
       <TableRow>
@@ -28,9 +56,24 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
             }}
           />
         </TableCell>
-        {props.headerCells.map((headCell, index) => (
-          <TableCell key={index} align={headCell.numeric ? 'right' : 'left'}>
-            {headCell.label}
+        {headerCells.map((headCell) => (
+          <TableCell
+            key={headCell.id}
+            align={headCell.numeric ? 'right' : 'left'}
+            sortDirection={orderBy === headCell.id ? order : false}
+          >
+            <TableSortLabel
+              active={orderBy === headCell.id}
+              direction={orderBy === headCell.id ? order : 'asc'}
+              onClick={createSortHandler(headCell.id)}
+            >
+              {headCell.label}
+              {orderBy === headCell.id ? (
+                <Box component="span" sx={visuallyHidden}>
+                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                </Box>
+              ) : null}
+            </TableSortLabel>
           </TableCell>
         ))}
       </TableRow>
