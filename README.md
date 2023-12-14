@@ -57,9 +57,21 @@ Authenticate to your AWS account and set up AWS CDK (if not already installed). 
 
 Please follow the instructions in the original requirements for running the app and making sure it works as expected. If you face any issues, please open an issue in the Github Repository.
 
+## Xero Invoice
+
+1. Create a new AWS Lambda function that uses the "xero-node" third-party API. This function should use an access token to authenticate requests.
+
+2. Implement functionality to refresh the access token whenever it expires.
+
+3. On the front-end, create a reusable "EnhancedTable" component. This component should be capable of handling various operations such as pagination, sorting, and filtering.
+
+4. Develop a custom hook that manages page, order, and the logic of filtering invoices from a GraphQL endpoint.
+
 ## Testing
 
-The test cases were based on the user stories provided. Please refer to the TEST001 - TEST006 sections in the original requirements for specifics.
+Our test cases have been constructed based on the provided user stories. For specific details on these test cases, please refer to sections TEST001 - TEST006 in the original requirements document.
+
+All components have undergone unit testing using Vitest, ensuring each individual part of the application functions as expected in isolation. Additionally, the React frontend application has passed all lint checks, ensuring code consistency and detecting potential problems in the codebase.
 
 ## Conclusion
 
