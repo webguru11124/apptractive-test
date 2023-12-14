@@ -77,4 +77,6 @@ All components have undergone unit testing using Vitest, ensuring each individua
 
 This concludes the solution for the Full-stack Technical Test. Please feel free to explore this repository further and provide any feedback if necessary.
 
+This is live loom video: https://www.loom.com/share/eda481ed7b214bd09dda51e50578dd9c
+
 Thank you!
