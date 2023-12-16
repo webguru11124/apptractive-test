@@ -79,4 +79,8 @@ This concludes the solution for the Full-stack Technical Test. Please feel free 
 
 This is live loom video: https://www.loom.com/share/eda481ed7b214bd09dda51e50578dd9c
 
+## Bouns
+
+I add CI/CD pipeline using amplify.
+That's live url: https://main.d1xm90x2ghpxoh.amplifyapp.com 
 Thank you!
