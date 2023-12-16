@@ -5,6 +5,8 @@ applications:
         preBuild:
           commands:
             - yarn install
+            - yarn lint        # Add this line to run linting
+            - yarn test        # Add this line to run tests
         build:
           commands:
             - npx nx build react-app
