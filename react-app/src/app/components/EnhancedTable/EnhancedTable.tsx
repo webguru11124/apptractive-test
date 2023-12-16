@@ -13,8 +13,8 @@ import Switch from '@mui/material/Switch';
 import { EnhancedTableHead } from './TableHead/TableHead';
 import { EnhancedTableToolbar } from './TableToolbar/TableToolbar';
 import { useTranslation } from 'react-i18next';
-import { Spinner } from '../Spinner';
 import { Order } from './TableHead/type';
+import { Skeleton } from '@mui/material';
 
 interface EnhancedTableProps<T extends object> {
   rows: undefined | T[];
@@ -182,17 +182,26 @@ export function EnhancedTable<T extends object>({
                       </TableRow>
                     );
                   })}
-                {emptyRows > 0 && (
-                  <TableRow
-                    style={{
-                      height: (dense ? 33 : 53) * emptyRows,
-                    }}
-                  >
-                    <TableCell colSpan={6}>
-                      {rows === undefined && <Spinner />}
-                    </TableCell>
-                  </TableRow>
-                )}
+                {emptyRows > 0 &&
+                  new Array(emptyRows).fill(null).map((_, index) => (
+                    <TableRow
+                      style={{
+                        height: dense ? 33 : 53,
+                      }}
+                      key={index}
+                    >
+                      <TableCell colSpan={6} padding="normal">
+                        {rows === undefined ? (
+                          <Skeleton
+                            variant="rectangular"
+                            sx={{ margin: '-4px' }}
+                          />
+                        ) : (
+                          <div></div>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             }
           </Table>

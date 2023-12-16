@@ -23,25 +23,27 @@ export const handler = async (ctx: Context) => {
   console.log('statuses: ', statuses);
 
   const item: User = await getRecord(TABLE_USER ?? '', { id: sub });
-  const tokenSet: TokenSet = JSON.parse(item.tokenSet);
+  const storedTokenSet: TokenSet = JSON.parse(item.tokenSet);
 
   let xero;
   try {
-    xero = await initXeroClient({ scopes: tokenSet.scope });
+    xero = await initXeroClient({ scopes: storedTokenSet.scope });
   } catch (err: any) {
     console.log('ERROR init xero: ', err);
     throw new Error(err.message);
   }
 
-  await xero.setTokenSet(tokenSet);
+  await xero.setTokenSet(storedTokenSet);
+  const tokenSet = await xero.readTokenSet();
 
-  if (tokenSet && new Date(tokenSet.expires_at * 1000) < new Date()) {
+  if (tokenSet.expired()) {
     const validTokenSet = await xero.refreshToken();
     // save the new tokenset
     const updateParams = {
       tokenSet: JSON.stringify(validTokenSet),
     };
     await updateRecord(TABLE_USER ?? '', { id: sub }, updateParams);
+    await xero.setTokenSet(validTokenSet);
   }
 
   await xero.updateTenants();
