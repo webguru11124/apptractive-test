@@ -1,3 +1,4 @@
+import React from 'react';
 import { render } from '../../helpers/render';
 import { BrowserRouter } from 'react-router-dom';
 

@@ -316,7 +316,7 @@ export class AuthStack extends Stack {
         custom: true,
       },
       oAuth: {
-        callbackUrls: ['http://localhost:4200/xero-redirect'],
+        callbackUrls: ['https://localhost:4200/xero-redirect'],
       },
       supportedIdentityProviders: [
         UserPoolClientIdentityProvider.custom('Xero'),

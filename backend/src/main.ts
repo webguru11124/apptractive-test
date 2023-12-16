@@ -6,29 +6,35 @@ import { AuthStack } from './stacks/authStack';
 import { DatabaseStack } from './stacks/databaseStack';
 import { LayerStack } from './stacks/layerStack';
 
-import * as dotenv from "dotenv";
+import * as dotenv from 'dotenv';
 
 dotenv.config();
 
 const {
-  STAGE
+  STAGE,
+  AWS_ACCOUNT,
+  AWS_REGION,
+  XERO_CLIENT_ID,
+  XERO_CLIENT_SECRET,
+  APP_NAME,
+  APP_PREFIX,
 } = process.env;
 
 const stage = STAGE as string;
 const isProd = stage === 'prod';
 
-const appName = 'FullstackTestApp';
-const appPrefix = 'FUL';
+const appName = APP_NAME;
+const appPrefix = APP_PREFIX;
 
 const apiId = `${appPrefix}ProjectApiId`;
 const apiName = `${appPrefix}GraphqlAPI-${stage}`;
 const createUserFuncName = `${appPrefix}AuthStack-createUserFunc-${stage}`;
 
-const account = '';
-const region = '';
+const account = AWS_ACCOUNT;
+const region = AWS_REGION;
 
-const xeroClientId = '';
-const xeroClientSecret = '';
+const xeroClientId = XERO_CLIENT_ID;
+const xeroClientSecret = XERO_CLIENT_SECRET;
 
 const defaultEnv = {
   account,
@@ -64,7 +70,7 @@ const authStack = new AuthStack(app, `${appPrefix}AuthStack`, {
   createUserFuncName,
   stage,
   xeroClientId,
-  xeroClientSecret
+  xeroClientSecret,
 });
 
 new AppSyncAPIStack(app, `${appPrefix}AppSyncAPIStack`, {
