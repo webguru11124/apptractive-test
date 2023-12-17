@@ -17,26 +17,20 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 20
-          
-      - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
-      - name: Cache dependencies
-        uses: actions/cache@v3
+      - uses: actions/cache@v3
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+      - run: yarn install --frozen-lockfile
 
-      - name: Set NX Shas
-        uses: nrwl/nx-set-shas@v3
+      - uses: nrwl/nx-set-shas@v3
 
-      - name: Set Git Branch
       - run: git branch --track main origin/main
 
       - run: npx nx format:check
