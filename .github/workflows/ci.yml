@@ -27,7 +27,7 @@ jobs:
         run: yarn install
 
       - name: lint and test
-        run: npx nx affected --target=format:check,lint,test,build --parallel=3 --base=origin/main --head=HEAD --projects=react-app
+        run: npx nx affected --target=format:check,lint,test,build --parallel=3 --base=origin/main --head=HEAD --projects=react-app --only-failed
 
       - name: Run codegen script
         run: yarn codegen
