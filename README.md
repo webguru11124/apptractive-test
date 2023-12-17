@@ -121,6 +121,7 @@ Once the stories are complete, let us know and we will review together. Create a
 
 **So that** I can be authenticated via Xero oAuth 2 to access my data
 
+<<<<<<< Updated upstream
 #### Acceptance Criteria
 1. Once a user signs in, they should see the dashboard
 2. On the dashboard there is a button "Connect Xero"
@@ -177,3 +178,10 @@ Once the stories are complete, let us know and we will review together. Create a
 - For the UI:
   - Complete the UI in the component `react-app/src/app/pages/XeroTransactions/XeroTransactions.tsx`
   - Take note of the UI library the application uses, you may be able to use a UI component that will display the data nice, manage the columns and rows, whilst handling pagination
+=======
+I add CI/CD pipeline using amplify.
+That's live url: https://main.d1xm90x2ghpxoh.amplifyapp.com 
+Also I use github workflow like PR, milestone, issues, actions for this project.
+
+Thank you!
+>>>>>>> Stashed changes
