@@ -1,0 +1,41 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`EnhancedTableToolbar Component > rendered successfully 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiToolbar-root MuiToolbar-gutters MuiToolbar-regular css-pjjt8i-MuiToolbar-root"
+    >
+      <div
+        class="MuiTypography-root MuiTypography-h6 css-2pbtu6-MuiTypography-root"
+        data-testid="invoices"
+        id="tableTitle"
+      >
+        invoices
+      </div>
+      <button
+        aria-label="filterList"
+        class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-78trlr-MuiButtonBase-root-MuiIconButton-root"
+        data-mui-internal-clone-element="true"
+        tabindex="0"
+        type="button"
+      >
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+          data-testid="FilterListIcon"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"
+          />
+        </svg>
+        <span
+          class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+        />
+      </button>
+    </div>
+  </div>
+</body>
+`;

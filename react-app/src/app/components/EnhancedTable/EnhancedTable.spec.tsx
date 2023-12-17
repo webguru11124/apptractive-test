@@ -19,7 +19,7 @@ describe('EnhancedTable', () => {
         columns={['column1', 'column2', 'column3']}
         page={0}
         setPage={() => {}}
-        rowsPerPage={5}
+        rowsPerPage={10}
         setRowsPerPage={() => {}}
         totalCount={mockData.length}
       />

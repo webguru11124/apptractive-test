@@ -9,7 +9,7 @@ import { Button, Typography } from '@mui/material';
 import { Auth } from 'aws-amplify';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { NavLink, useSearchParams } from 'react-router-dom';
+import { NavLink, useLocation, useSearchParams } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import { PageContainer } from '../../components';
 
@@ -20,11 +20,11 @@ export function XeroRedirect(props: XeroRedirectProps) {
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
+  const url = useLocation();
   const [xeroCreateTokenSet] = useMutation(
     gql`
       ${XERO_CREATE_TOKEN_SET}
-    `,
-    {}
+    `
   );
 
   const errorCode = searchParams.get('error');
@@ -32,8 +32,7 @@ export function XeroRedirect(props: XeroRedirectProps) {
   useEffect(() => {
     const getAuthUser = async () => {
       try {
-        const authUser = await Auth.currentAuthenticatedUser();
-        console.log('authUser: ', authUser);
+        await Auth.currentAuthenticatedUser();
       } catch (err) {
         console.log('ERROR Auth.currentAuthenticatedUser: ', err);
       }
@@ -44,11 +43,10 @@ export function XeroRedirect(props: XeroRedirectProps) {
 
   useEffect(() => {
     const createTokenSet = async () => {
-      const url = window.location.href;
       const options: OperationVariables = {
         variables: {
           input: {
-            url,
+            url: `${url.pathname}${url.search}`,
             scopeSet: XeroScopeSet.ACCOUNTING,
           },
         },
@@ -67,7 +65,14 @@ export function XeroRedirect(props: XeroRedirectProps) {
       });
       createTokenSet();
     }
-  }, [xeroCreateTokenSet, errorCode, t, enqueueSnackbar]);
+  }, [
+    xeroCreateTokenSet,
+    errorCode,
+    t,
+    enqueueSnackbar,
+    url.pathname,
+    url.search,
+  ]);
 
   return (
     <PageContainer>

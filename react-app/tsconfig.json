@@ -5,11 +5,12 @@
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
+    "lib": ["ESNext", "dom"],
     "jsxImportSource": "@emotion/react",
     "types": ["vite/client", "vitest"]
   },
   "files": [],
-  "include": [],
+  "include": ["src", "./setupTest.ts"],
   "references": [
     {
       "path": "./tsconfig.app.json"

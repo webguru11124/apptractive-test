@@ -1,4 +1,5 @@
-/// <reference types='vitest' />
+/// <reference types="vitest" />
+/// <reference types="vite/client" />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import viteTsConfigPaths from 'vite-tsconfig-paths';
@@ -19,6 +20,7 @@ export default defineConfig({
   preview: {
     port: 4300,
     host: 'localhost',
+    
   },
 
   plugins: [
@@ -34,11 +36,15 @@ export default defineConfig({
   // },
 
   test: {
+    coverage: {
+      provider: 'istanbul',
+    },
     globals: true,
     cache: {
       dir: '../node_modules/.vitest',
     },
     environment: 'jsdom',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    setupFiles: ['src/setupTest.ts'],
   },
 });
