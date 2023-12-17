@@ -65,7 +65,14 @@ export function XeroRedirect(props: XeroRedirectProps) {
       });
       createTokenSet();
     }
-  }, [xeroCreateTokenSet, errorCode, t, enqueueSnackbar]);
+  }, [
+    xeroCreateTokenSet,
+    errorCode,
+    t,
+    enqueueSnackbar,
+    url.pathname,
+    url.search,
+  ]);
 
   return (
     <PageContainer>
