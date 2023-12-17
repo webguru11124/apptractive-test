@@ -1,11 +1,14 @@
-import { MockedProvider } from '@apollo/client/testing';
+import { MockedProvider, wait } from '@apollo/client/testing';
 import { render } from '../../helpers/render';
 import {
   xeroCreateTokenSet,
   XeroScopeSet,
 } from '../../graphql';
-import XeroRedirect from './XeroRedirect';
+import XeroRedirect, { XeroRedirectProps } from './XeroRedirect';
 import { gql } from '@apollo/client';
+import { ErrorBoundary } from 'react-error-boundary';
+import {  act, screen, waitFor } from '@testing-library/react'
+import { XeroErrorBoundary } from '../../components/XeroErrorBoundary/XeroErrorBoundary';
 
 const XERO_CREATE_TOKEN_SET = gql`${xeroCreateTokenSet}`;
 const request = {
@@ -13,18 +16,31 @@ const request = {
   variables: {
     input: {
       url:"https://localhost:4200/xero-redirect",
-      scopeSet: XeroScopeSet.ACCOUNTING,
+      scopeSet: [XeroScopeSet.ACCOUNTING],
     }
   }
+}
+const response = {
+  token:"123-456",
+  expireIn:12345,
+  user:{
+    email:"abc@abc.com",
+    givenName:"abc",
+    familyName:"def",
+    __typename:"user"
+  },
+  __typename:"xeroCreateTokenSet"
+  
 }
 const mocks = [
   {
     request,
-    result:{data:{xeroCreateTokenSet:{request}}}
+    result:{data:{xeroCreateTokenSet:{...response}}}
   },
   {
-    delay: Infinity ,
+    delay: 1000 ,
     request,
+    result:{data:{xeroCreateTokenSet:{...response}}}
   },
   {
     request,
@@ -32,13 +48,30 @@ const mocks = [
   },
 ];
 
+const renderComponent = (props?:XeroRedirectProps)=>render(  
+  <XeroErrorBoundary>
+    <MockedProvider mocks={mocks} addTypename={false}>
+      <XeroRedirect {...props}/>
+    </MockedProvider>
+  </XeroErrorBoundary>)
+
 describe('XeroRedirect', () => {
-  it('should render successfully', () => {
-    const { baseElement } = render(
-      <MockedProvider mocks={mocks} addTypename={false}>
-        <XeroRedirect />
-      </MockedProvider>
-      );
-    expect(baseElement).toMatchSnapshot();
+  it('should render successfully', async () => {
+    await act(async ()=>{
+      const { baseElement } = renderComponent();
+      await waitFor(() => {
+        expect(baseElement).toBeTruthy();
+      });
+    })
+  });
+
+  it('should render correctly',async () => {
+    await  act(async ()=>{
+      const { baseElement } = renderComponent();
+      await waitFor(() => {
+        expect(baseElement).toMatchSnapshot();
+      });
+    })
+    
   });
 });

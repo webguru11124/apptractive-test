@@ -1,0 +1,71 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`XeroRedirect > should render correctly 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiBox-root css-gatsgs"
+    >
+      <h3
+        class="MuiTypography-root MuiTypography-h3 css-gepadz-MuiTypography-root"
+      >
+        xeroRedirection
+      </h3>
+      <a
+        class=""
+        href="/dashboard"
+      >
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium css-1etjjuw-MuiButtonBase-root-MuiButton-root"
+          tabindex="0"
+          type="button"
+        >
+          goToDashboard
+          <span
+            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+          />
+        </button>
+      </a>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`XeroRedirect > should render correctly 2`] = `<body />`;
+
+exports[`XeroRedirect > should render correctly 3`] = `
+<body>
+  <div />
+</body>
+`;
+
+exports[`XeroRedirect > should render successfully 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiBox-root css-gatsgs"
+    >
+      <h3
+        class="MuiTypography-root MuiTypography-h3 css-gepadz-MuiTypography-root"
+      >
+        xeroRedirection
+      </h3>
+      <a
+        class=""
+        href="/dashboard"
+      >
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium css-1etjjuw-MuiButtonBase-root-MuiButton-root"
+          tabindex="0"
+          type="button"
+        >
+          goToDashboard
+          <span
+            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+          />
+        </button>
+      </a>
+    </div>
+  </div>
+</body>
+`;

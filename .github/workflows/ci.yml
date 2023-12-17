@@ -9,6 +9,11 @@ on:
 jobs:
   main:
     runs-on: ubuntu-latest
+
+    strategy:
+    matrix:
+      node-version: [16.x, 18.x]
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -16,14 +21,14 @@ jobs:
       # Cache node_modules
       - uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: ${{ matrix.node-version }}
           cache: 'yarn'
 
       - name: Install dependencies
-        run: yarn
+        run: yarn install
 
       - name: lint and test
-        run: npx nx affected -t format:check,lint,test,build --parallel=3
+        run: npx nx affected -target=format:check,lint,test,build --parallel=3
 
       - name: Run codegen script
         run: yarn codegen
