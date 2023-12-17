@@ -34,6 +34,9 @@ export default defineConfig({
   // },
 
   test: {
+    coverage: {
+      provider: 'istanbul',
+    },
     globals: true,
     cache: {
       dir: '../node_modules/.vitest',
