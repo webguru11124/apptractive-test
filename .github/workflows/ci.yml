@@ -20,13 +20,13 @@ jobs:
           cache: 'yarn'
 
       - name: Install dependencies
-      - run: yarn
+        run: yarn
 
       - name: lint and test
-      - run: npx nx affected -t format:check,lint,test,build --parallel=3
+        run: npx nx affected -t format:check,lint,test,build --parallel=3
 
       - name: Run codegen script
-      - run: yarn codegen
+        run: yarn codegen
 
       - name: Run output script
-      - run: yarn output
+        run: yarn output
