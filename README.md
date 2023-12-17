@@ -1,187 +1,86 @@
-# Apptractive Fullstack Technical Test
+# Fullstack Technical Test Solution
+
+This repository contains the solution for the Full-stack Technical Test.
 
 ## Background
-This technical test assesses your full-stack application development skills using existing code similar to the project you'll be working on and includes tasks that simulate real project work.
 
-Most applications connect to 3rd party APIs, which generally involve authentication by oauth2.0, retrieving some data via their API, then displaying it to the user. 
+The project is a Full-stack application with the following components:
 
-In this test you will be authenticating Xero using oauth 2, then call the Xero API (https://developer.xero.com) to retrieve the user's invoices and display them in the web application.
+- Frontend: React Typescript
+- Backend: AWS Services (Lambda, Appsync GraphQL, DynamoDB, etc)
+- 3rd Party API: Xero - Accounting software
 
-If you have not worked with oAuth before, it is recommended to read up on it before starting the test (sample video explaining oauth2 https://www.youtube.com/watch?v=ZV5yTm4pT8g). If it's your first time, at least by completing this test you will take away something important in your future coding career :)
+The application authenticates Xero using oauth 2, calls the Xero API to retrieve the user's invoices and displays them in the web application.
 
-## Project structure
-- Project - NX monorepo (https://nx.dev - allows running lint, tests, build, etc. e.g. `npx nx lint backend`) 
-- Frontend - React Typescript (https://nx.dev/nx-api/react)
-- Backend Tooling - AWS CDK (Typescript) (https://github.com/adrian-goe/nx-aws-cdk-v2/blob/main/packages/aws-cdk-v2/README.md)
-- Database - DynamoDB
-- Functions - Lambda
-- API - Appsync GraphQL (Apollo used in Frontend)
-- 3rd Party API - Xero - Accounting software
+## Setup
 
-## Prerequisites
-There are some accounts you will need to set up before you can do the technical test.
+### Pre-Requisites
 
-If you have any issues or concerns with the below, please let us know.
+Before you start, please ensure you have the following:
 
-### Amazon Web Services
-You will need to use an existing Amazon Web Services account or create a new one to complete this test. (https://console.aws.amazon.com)
-- If you are creating a new account, you will need to provide payment information to complete the test however you can delete the account after the interview is complete
-- If you have an existing account, you can destroy the stack once complete (e.g. calling `cdk destory--profile enterprofilename` in the backend folder)
-- There shouldn't be costs associated with this test, however make sure to destroy once the interview is complete
-- The user stories will also guide you from this point
+1. An Amazon Web Services account for deploying the back-end ([Get started here](https://console.aws.amazon.com))
+2. A Xero developer account for accessing Xero APIs ([Get started here](https://www.xero.com/au/signup/developers))
+3. A Github account for version control.
 
-### Xero
-Full instructions here: https://developer.xero.com/documentation/getting-started-guide/
-1. Create a developer Xero account to complete this test, which will give you access to Xero APIs (https://www.xero.com/au/signup/developers)
-2. Once you create and verify the developer account, it will prompt you to create an organisation and start a free trial (no payment information required)
-3. A demo company will also be created for you to use in the test (Demo Company)
-4. The user stories will also guide you from this point
+### Installation
 
-### Github
-Create a repo in Github and push this code before you begin. Use github workflows you are used to when completing this test. (e.g. feature branches, pull requests, etc)
+1. Clone the project from GitHub.
 
-## Run app
+2. To install dependencies:
 
-### Install dependencies
-`yarn install && cd backend/src/layers/dependencyLayer/nodejs && yarn install`
+   ```
+   yarn install && cd backend/src/layers/dependencyLayer/nodejs && yarn install
+   ```
 
-### Serve react app
-`npx nx serve react-app`
+3. To serve react app:
+   ```
+   npx nx serve react-app
+   ```
 
-### Scripts
-Review `package.json` for all scripts.
+### Project Structure
 
-| Command             | Description                                                                                                                                        |
-|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| `yarn run codegen ` | Generates the latest graphql schema and typescript types. Run after deploying GraphQL schema updates                                               |
-| `yarn run output`   | Copies output file to the react-app (providing it was generated during cdk deploy with flag. (e.g.  ` npx cdk deploy --outputs-file output.json `) |
-| `yarn run esbuild`  | Used by AWS CDK to transpile typescript to javascript, shouldn't be necessary to run manually                                                      |
+The project structure is as follows:
 
-### Environment
-For your information, the project was set up with:
-- yarn 3.6.4
-- node v18.16.1
+- backend: Contains all the backend code including AWS CDK scripts, Lambda function code and DynamoDB setup
+- react-app: Contains the React frontend application code
+- package.json: Specifies project metadata and dependencies
 
-## What we test
-1. That you are able to set up your dev environment, of course if you run intro troubles and can't get it working, please let us know. This happens in a real project too
-2. The code meets the requirements based on the user stories
-3. Coding best practices (e.g. comments, security, code structure, git workflow, etc)
-4. Demo of stories, code review together and discussion about your approach
+### Setting up Xero App
 
-## Stories
-Once the stories are complete, let us know and we will review together. Create a pull request or whatever workflow you would follow prior to a code review. 
+After you have created a Xero developer account, set up a new Xero app and obtain the client ID and Client Secret. Insert these credentials into the project.
 
-### TEST001 - Set up Xero App
-**As a** developer
+### Setting up AWS CDK
 
-**I want** to be able to set up a Xero app
+Authenticate to your AWS account and set up AWS CDK (if not already installed). If you have never used CDK in your AWS account, you will need to bootstrap it first. You would also need to deploy the back-end services in your AWS account.
 
-**So that** I can connect to Xero
+## Running the app
 
-#### Acceptance Criteria
-1. When logged in to Xero, Set app name as 'Fullstack Test' at https://developer.xero.com/app/manage/
-2. Select integration type as "Web app"
-3. Enter application url as https://localhost:4200
-4. Enter the redirect URI as https://localhost:4200/xero-redirect (it will be used in oauth2 to exchange code for access token) 
-5. Once app is created, generate the client ID and Client Secret for application access
+Please follow the instructions in the original requirements for running the app and making sure it works as expected. If you face any issues, please open an issue in the Github Repository.
 
-### TEST002 - Connect to Xero API
-**As a** developer
+## Xero Invoice
 
-**I want** to be able to connect to Xero API
+1. Create a new AWS Lambda function that uses the "xero-node" third-party API. This function should use an access token to authenticate requests.
 
-**So that** I can access the Xero API
+2. Implement functionality to refresh the access token whenever it expires.
 
-#### Acceptance Criteria
-1. Insert the generated Xero client ID and Client Secret into the project to allow connecting to the Xero API (search `xeroClientId` and `xeroClientSecret` in the project)
-2. Ensure client Secret is not exposed in the code
+3. On the front-end, create a reusable "EnhancedTable" component. This component should be capable of handling various operations such as pagination, sorting, and filtering.
 
-### TEST003 - Set up AWS CDK
-**As a** developer
+4. Develop a custom hook that manages page, order, and the logic of filtering invoices from a GraphQL endpoint.
 
-**I want** to be able to set up AWS CDK
+## Testing
 
-**So that** I can deploy the backend to the correct AWS account
+Our test cases have been constructed based on the provided user stories. For specific details on these test cases, please refer to sections TEST001 - TEST006 in the original requirements document.
 
-#### Acceptance Criteria
-1. Authenticate to your AWS account
-2. Set up AWS CDK using `npm install -g aws-cdk` or `yarn global add aws-cdk` if not already installed
-3. If you have never used CDK in your AWS account, you will need to bootstrap it first `npx nx bootstrap backend --profile enterprofilename`
-4. First deploy the lambda layer stack using `npx nx deploy backend FULLayerStack --profile enterprofilename`
-5. Deploy all stacks in the backend using `npx nx deploy backend --all --require-approval=never --outputs-file output.json --profile enterprofilename`
-6. Copy output file to react-app application by running `yarn run output` 
+All components have undergone unit testing using Vitest, ensuring each individual part of the application functions as expected in isolation. Additionally, the React frontend application has passed all lint checks, ensuring code consistency and detecting potential problems in the codebase.
 
-#### Developer notes
-- Quick and Easy way to authenticate to your AWS account is to generate secret and access keys. https://docs.aws.amazon.com/cli/latest/userguide/cli-authentication-user.html `aws configure --profile enterprofilename`), otherwise more ways here https://docs.aws.amazon.com/cli/latest/userguide/getting-started-quickstart.html
+## Conclusion
 
-### TEST004 - Authenticated user - Connect Xero button
-**As an** user
+This concludes the solution for the Full-stack Technical Test. Please feel free to explore this repository further and provide any feedback if necessary.
 
-**I want** to be able to connect to Xero
+This is live loom video: https://www.loom.com/share/eda481ed7b214bd09dda51e50578dd9c
 
-**So that** I can be authenticated via Xero oAuth 2 to access my data
+## Bouns
 
-<<<<<<< Updated upstream
-#### Acceptance Criteria
-1. Once a user signs in, they should see the dashboard
-2. On the dashboard there is a button "Connect Xero"
-3. Clicking "Connect Xero" should open a new window to Xero oAuth 2.0
-4. Once the user connects to Xero, they should be redirected back to the application (`/xero-redirect` route)
-
-#### Developer notes
-- All this functionality should already be completed without any development from your end, unless your environment / xero is not set up correctly
-
-### TEST005 - Xero oauth2 - Exchange authorisation code for token set
-**As a** user
-
-**I want** the application to exchange the Xero authorisation code for a token set
-
-**So that** I can make authenticated requests to access my Xero data
-
-#### Acceptance Criteria
-1. Backend uses the redirect URL to exchange the authorisation code for a token set
-2. The token set is stored for my user in the database for subsequent Xero API requests
-3. Once successfully authenticated, in the web application the user should see a message that says "Xero Connected"
-4. Once successfully authenticated, in the web application the user should see a button "Go To Dashboard"
-5. Clicking "Go to Dashboard", user should navigate to the dashboard page
-
-#### Developer notes
-- The lambda function you will work on is `/backend/src/functions/xeroCreateTokenSet/index.ts`
-- The React component to work on is `react-app/src/app/pages/XeroRedirect/XeroRedirect.tsx`
-- A user record is created for each sign up in the DynamoDB database, you can update this record using the sub to store the token set 
-- Read more here to understand the Xero oAuth workflow and integration:
-  - https://developer.xero.com/documentation/guides/oauth2/auth-flow
-  - https://github.com/XeroAPI/xero-node
-  - https://github.com/XeroAPI/xero-node-oauth2-react-app
-
-### TEST006 - Xero API Invoices
-**As a** user
-
-**I want** to be able to view my invoices
-
-**So that** I can see all my invoices that appear in Xero
-
-#### Acceptance criteria
-1. Retrieve the token set from the user's profile to call the Xero API 
-2. If the token set is expired, the backend should refresh the token set before calling the Xero API
-3. In the web application, the user should see a list of their invoices:
-   - For each invoice, it should show the invoice number, status, amount paid, Tax total and total 
-4. User should be able to toggle between paginated results
-5. User should be able to filter invoices by status
-
-#### Developer notes
-- You will need to use AWS CDK to complete this task (previously done for you):
-  - Update the GraphQL schema (at `backend/src/appsync/schema.graphql`)
-  - Create a lambda function to retrieve the invoices (in the directory `backend/src/functions`)
-  - Create a mutation that will trigger a lambda function (at `backend/src/stacks/AppSyncAPIStack.ts`)
-  - Use the sub to retrieve the user's database record, which should have the stored token set
-- For the UI:
-  - Complete the UI in the component `react-app/src/app/pages/XeroTransactions/XeroTransactions.tsx`
-  - Take note of the UI library the application uses, you may be able to use a UI component that will display the data nice, manage the columns and rows, whilst handling pagination
-=======
 I add CI/CD pipeline using amplify.
 That's live url: https://main.d1xm90x2ghpxoh.amplifyapp.com 
-Also I use github workflow like PR, milestone, issues, actions for this project.
-
 Thank you!
->>>>>>> Stashed changes

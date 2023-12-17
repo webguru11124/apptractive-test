@@ -1,3 +1,4 @@
+import React from 'react';
 import { CacheProvider } from '@emotion/react';
 import { CssBaseline } from '@mui/material';
 import { DesignSystemContextProvider } from './components';
@@ -10,6 +11,8 @@ import { defaultTheme } from './helpers/defaultTheme';
 import { NavRoutes } from './navigation/NavRoutes';
 import './i18n';
 import cdkOutput from './output.json';
+import { SnackbarProvider } from 'notistack';
+import { XeroErrorBoundary } from './components/XeroErrorBoundary/XeroErrorBoundary';
 
 const defaultCache = createEmotionCache();
 const theme = getTheme(defaultTheme('light'));
@@ -41,16 +44,22 @@ Amplify.configure({
 });
 
 export function App() {
-  return (<CacheProvider value={defaultCache}>
+  return (
+    <CacheProvider value={defaultCache}>
       <EmotionThemeProvider theme={theme}>
         <ThemeProvider theme={theme}>
-          <CssBaseline/>
+          <CssBaseline />
           <DesignSystemContextProvider theme={theme}>
-            <NavRoutes/>
+            <SnackbarProvider maxSnack={3}>
+              <XeroErrorBoundary>
+                <NavRoutes />
+              </XeroErrorBoundary>
+            </SnackbarProvider>
           </DesignSystemContextProvider>
         </ThemeProvider>
       </EmotionThemeProvider>
-    </CacheProvider>);
+    </CacheProvider>
+  );
 }
 
 export default App;

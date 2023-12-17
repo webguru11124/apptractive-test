@@ -8,3 +8,4 @@ export * from './Layout/Layout';
 export * from './Flex/Flex';
 export * from './DesignSystemContextProvider/DesignSystemContextProvider';
 export * from './Image/Image';
+export * from './Spinner';

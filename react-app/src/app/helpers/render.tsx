@@ -23,7 +23,7 @@ const AllTheProviders = ({ children }: PropsWithChildren) => {
             <ThemeProvider theme={theme}>
               <CssBaseline />
               <DesignSystemContextProvider theme={theme}>
-                  {children}
+                {children}
               </DesignSystemContextProvider>
             </ThemeProvider>
           </EmotionThemeProvider>
@@ -38,6 +38,7 @@ const customRender = (ui: ReactElement, options = {}) =>
 
 // re-export everything
 export * from '@testing-library/react';
+export { default as userEvent } from '@testing-library/user-event';
 
 // override render method
 export { customRender as render };

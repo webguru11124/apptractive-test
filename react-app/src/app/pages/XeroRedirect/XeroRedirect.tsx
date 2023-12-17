@@ -1,30 +1,38 @@
+import React from 'react';
 import { gql, useMutation } from '@apollo/client';
 import { OperationVariables } from '@apollo/client/core/types';
 import {
   xeroCreateTokenSet as XERO_CREATE_TOKEN_SET,
   XeroScopeSet,
 } from '../../graphql';
-import { Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { Auth } from 'aws-amplify';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSearchParams } from 'react-router-dom';
+import { NavLink, useLocation, useSearchParams } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
+import { PageContainer } from '../../components';
 
 /* eslint-disable-next-line */
 export interface XeroRedirectProps {}
 
 export function XeroRedirect(props: XeroRedirectProps) {
+  const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
-  const [xeroCreateTokenSet] = useMutation(gql(XERO_CREATE_TOKEN_SET), {});
+  const url = useLocation();
+  const [xeroCreateTokenSet] = useMutation(
+    gql`
+      ${XERO_CREATE_TOKEN_SET}
+    `
+  );
 
   const errorCode = searchParams.get('error');
 
   useEffect(() => {
     const getAuthUser = async () => {
       try {
-        const authUser = await Auth.currentAuthenticatedUser();
-        console.log('authUser: ', authUser);
+        await Auth.currentAuthenticatedUser();
       } catch (err) {
         console.log('ERROR Auth.currentAuthenticatedUser: ', err);
       }
@@ -35,37 +43,62 @@ export function XeroRedirect(props: XeroRedirectProps) {
 
   useEffect(() => {
     const createTokenSet = async () => {
-      const url = window.location.href;
       const options: OperationVariables = {
         variables: {
           input: {
-            url,
+            url: `${url.pathname}${url.search}`,
             scopeSet: XeroScopeSet.ACCOUNTING,
           },
         },
-      }
+      };
 
       try {
-        const { data } = await xeroCreateTokenSet(options);
-
-        console.log('data: ', data);
+        await xeroCreateTokenSet(options);
       } catch (err) {
         console.log('ERROR create xero token set', err);
       }
     };
 
-    createTokenSet();
-  }, [xeroCreateTokenSet]);
+    if (!errorCode) {
+      enqueueSnackbar(t('xeroConnected', { ns: 'xero' }), {
+        variant: 'success',
+      });
+      createTokenSet();
+    }
+  }, [
+    xeroCreateTokenSet,
+    errorCode,
+    t,
+    enqueueSnackbar,
+    url.pathname,
+    url.search,
+  ]);
 
   return (
-    <>
-      <Typography>Xero redirected</Typography>
+    <PageContainer>
+      <Typography variant="h3">
+        {t('xeroRedirection', { ns: 'xero' })}
+      </Typography>
+      <NavLink to="/dashboard">
+        <Button
+          sx={{
+            backgroundColor: '#13B5EA',
+            '&:hover': {
+              backgroundColor: '#13B5EA',
+              opacity: 0.5,
+            },
+            color: '#FFF',
+          }}
+        >
+          {t('goToDashboard', { ns: 'common' })}
+        </Button>
+      </NavLink>
       {errorCode && (
         <Typography color="error">
           {t('xeroError', { ns: 'xero' })} ({errorCode})
         </Typography>
       )}
-    </>
+    </PageContainer>
   );
 }
 
