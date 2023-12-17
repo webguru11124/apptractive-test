@@ -17,7 +17,7 @@ type HeaderCell = {
   label: string;
   numeric: Numeric;
 };
-interface EnhancedTableProps {
+export interface EnhancedTableProps {
   numSelected: number;
 
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -43,7 +43,7 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
       onChangeOrder && onChangeOrder(event, property);
     };
   return (
-    <TableHead>
+    <TableHead data-testid="table-head">
       <TableRow>
         <TableCell padding="checkbox">
           <Checkbox

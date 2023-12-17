@@ -1,77 +1,81 @@
-import { MockedProvider, wait } from '@apollo/client/testing';
-import { render } from '../../helpers/render';
-import {
-  xeroCreateTokenSet,
-  XeroScopeSet,
-} from '../../graphql';
-import XeroRedirect, { XeroRedirectProps } from './XeroRedirect';
+import React from 'react';
+import { MockedProvider } from '@apollo/client/testing';
+import { render, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { gql } from '@apollo/client';
-import { ErrorBoundary } from 'react-error-boundary';
-import {  act, screen, waitFor } from '@testing-library/react'
+import { vi } from 'vitest';
+
+import XeroRedirect, { XeroRedirectProps } from './XeroRedirect';
+import { xeroCreateTokenSet, XeroScopeSet } from '../../graphql';
 import { XeroErrorBoundary } from '../../components/XeroErrorBoundary/XeroErrorBoundary';
 
-const XERO_CREATE_TOKEN_SET = gql`${xeroCreateTokenSet}`;
+const XERO_CREATE_TOKEN_SET = gql`
+  ${xeroCreateTokenSet}
+`;
 const request = {
   query: XERO_CREATE_TOKEN_SET,
   variables: {
     input: {
-      url:"https://localhost:4200/xero-redirect",
-      scopeSet: [XeroScopeSet.ACCOUNTING],
-    }
-  }
-}
-const response = {
-  token:"123-456",
-  expireIn:12345,
-  user:{
-    email:"abc@abc.com",
-    givenName:"abc",
-    familyName:"def",
-    __typename:"user"
+      url: 'http://example.com',
+      scopeSet: XeroScopeSet.ACCOUNTING,
+    },
   },
-  __typename:"xeroCreateTokenSet"
-  
-}
+};
+const response = {
+  __typename: 'XeroCreateTokenSetResponse',
+  token: 'mock-token',
+  expiresIn: 3600,
+  user: {
+    __typename: 'XeroCreateTokenSetUser',
+    email: 'test@example.com',
+    givenName: 'John',
+    familyName: 'Doe',
+  },
+};
 const mocks = [
   {
     request,
-    result:{data:{xeroCreateTokenSet:{...response}}}
-  },
-  {
-    delay: 1000 ,
-    request,
-    result:{data:{xeroCreateTokenSet:{...response}}}
-  },
-  {
-    request,
-    error: new Error("An error occurred")
+    result: { data: { xeroCreateTokenSet: response } },
   },
 ];
 
-const renderComponent = (props?:XeroRedirectProps)=>render(  
-  <XeroErrorBoundary>
-    <MockedProvider mocks={mocks} addTypename={false}>
-      <XeroRedirect {...props}/>
-    </MockedProvider>
-  </XeroErrorBoundary>)
+const renderComponent = (props?: XeroRedirectProps) =>
+  render(
+    <MemoryRouter initialEntries={['/']}>
+      <XeroErrorBoundary>
+        <MockedProvider mocks={mocks} addTypename={false}>
+          <XeroRedirect {...props} />
+        </MockedProvider>
+      </XeroErrorBoundary>
+    </MemoryRouter>
+  );
+
+// Correctly mock react-router-dom
+vi.mock('react-router-dom', async () => {
+  const actual: any = await vi.importActual('react-router-dom');
+  return {
+    ...actual,
+    useLocation: () => ({
+      pathname: '/',
+      search: '',
+      // other properties as needed
+    }),
+    useSearchParams: () => [new URLSearchParams({ error: 'mockError' })],
+  };
+});
 
 describe('XeroRedirect', () => {
   it('should render successfully', async () => {
-    await act(async ()=>{
-      const { baseElement } = renderComponent();
-      await waitFor(() => {
-        expect(baseElement).toBeTruthy();
-      });
-    })
+    const { baseElement } = renderComponent();
+    await waitFor(() => {
+      expect(baseElement).toBeTruthy();
+    });
   });
 
-  it('should render correctly',async () => {
-    await  act(async ()=>{
-      const { baseElement } = renderComponent();
-      await waitFor(() => {
-        expect(baseElement).toMatchSnapshot();
-      });
-    })
-    
+  it('should render correctly', async () => {
+    const { baseElement } = renderComponent();
+    await waitFor(() => {
+      expect(baseElement).toMatchSnapshot();
+    });
   });
 });

@@ -34,6 +34,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           color="inherit"
           variant="subtitle1"
           component="div"
+          data-testid="selected"
         >
           {`${numSelected} ${t('selected', { ns: 'common' })}`}
         </Typography>
@@ -43,6 +44,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           variant="h6"
           id="tableTitle"
           component="div"
+          data-testid="invoices"
         >
           {t('invoices', { ns: 'xero' })}
         </Typography>

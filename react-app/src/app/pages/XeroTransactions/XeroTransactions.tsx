@@ -10,7 +10,7 @@ export function XeroTransactions() {
   const { t } = useTranslation();
 
   return (
-    <PageContainer>
+    <PageContainer data-testid="xero-transaction">
       <Typography variant="h3">
         {t('xeroTransactions', { ns: 'xero' })}
       </Typography>

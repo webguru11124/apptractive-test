@@ -187,6 +187,7 @@ export function EnhancedTable<T extends object>({
                     <TableRow
                       style={{
                         height: dense ? 33 : 53,
+                        border: 'none',
                       }}
                       key={index}
                     >

@@ -22,6 +22,7 @@ exports[`XeroTransactions > should render successfully 1`] = `
           >
             <div
               class="MuiTypography-root MuiTypography-h6 css-2pbtu6-MuiTypography-root"
+              data-testid="invoices"
               id="tableTitle"
             >
               invoices
@@ -58,6 +59,7 @@ exports[`XeroTransactions > should render successfully 1`] = `
             >
               <thead
                 class="MuiTableHead-root css-15wwp11-MuiTableHead-root"
+                data-testid="table-head"
               >
                 <tr
                   class="MuiTableRow-root MuiTableRow-head css-1q1u3t4-MuiTableRow-root"
@@ -210,138 +212,7 @@ exports[`XeroTransactions > should render successfully 1`] = `
               </thead>
               <tbody
                 class="MuiTableBody-root css-apqrd9-MuiTableBody-root"
-              >
-                <tr
-                  class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
-                  style="height: 53px;"
-                >
-                  <td
-                    class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium css-1ex1afd-MuiTableCell-root"
-                    colspan="6"
-                  >
-                    <span
-                      class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-reyyfv-MuiSkeleton-root"
-                    />
-                  </td>
-                </tr>
-                <tr
-                  class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
-                  style="height: 53px;"
-                >
-                  <td
-                    class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium css-1ex1afd-MuiTableCell-root"
-                    colspan="6"
-                  >
-                    <span
-                      class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-reyyfv-MuiSkeleton-root"
-                    />
-                  </td>
-                </tr>
-                <tr
-                  class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
-                  style="height: 53px;"
-                >
-                  <td
-                    class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium css-1ex1afd-MuiTableCell-root"
-                    colspan="6"
-                  >
-                    <span
-                      class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-reyyfv-MuiSkeleton-root"
-                    />
-                  </td>
-                </tr>
-                <tr
-                  class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
-                  style="height: 53px;"
-                >
-                  <td
-                    class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium css-1ex1afd-MuiTableCell-root"
-                    colspan="6"
-                  >
-                    <span
-                      class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-reyyfv-MuiSkeleton-root"
-                    />
-                  </td>
-                </tr>
-                <tr
-                  class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
-                  style="height: 53px;"
-                >
-                  <td
-                    class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium css-1ex1afd-MuiTableCell-root"
-                    colspan="6"
-                  >
-                    <span
-                      class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-reyyfv-MuiSkeleton-root"
-                    />
-                  </td>
-                </tr>
-                <tr
-                  class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
-                  style="height: 53px;"
-                >
-                  <td
-                    class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium css-1ex1afd-MuiTableCell-root"
-                    colspan="6"
-                  >
-                    <span
-                      class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-reyyfv-MuiSkeleton-root"
-                    />
-                  </td>
-                </tr>
-                <tr
-                  class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
-                  style="height: 53px;"
-                >
-                  <td
-                    class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium css-1ex1afd-MuiTableCell-root"
-                    colspan="6"
-                  >
-                    <span
-                      class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-reyyfv-MuiSkeleton-root"
-                    />
-                  </td>
-                </tr>
-                <tr
-                  class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
-                  style="height: 53px;"
-                >
-                  <td
-                    class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium css-1ex1afd-MuiTableCell-root"
-                    colspan="6"
-                  >
-                    <span
-                      class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-reyyfv-MuiSkeleton-root"
-                    />
-                  </td>
-                </tr>
-                <tr
-                  class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
-                  style="height: 53px;"
-                >
-                  <td
-                    class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium css-1ex1afd-MuiTableCell-root"
-                    colspan="6"
-                  >
-                    <span
-                      class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-reyyfv-MuiSkeleton-root"
-                    />
-                  </td>
-                </tr>
-                <tr
-                  class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
-                  style="height: 53px;"
-                >
-                  <td
-                    class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeMedium css-1ex1afd-MuiTableCell-root"
-                    colspan="6"
-                  >
-                    <span
-                      class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-reyyfv-MuiSkeleton-root"
-                    />
-                  </td>
-                </tr>
-              </tbody>
+              />
             </table>
           </div>
           <div
@@ -378,7 +249,6 @@ exports[`XeroTransactions > should render successfully 1`] = `
                   aria-hidden="true"
                   aria-invalid="false"
                   class="MuiSelect-nativeInput css-yf8vq0-MuiSelect-nativeInput"
-                  name=":r4:"
                   tabindex="-1"
                   value="10"
                 />
