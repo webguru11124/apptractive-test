@@ -18,9 +18,9 @@ jobs:
         with:
           node-version: 20
           cache: 'yarn'
-          
+
       - name: Install dependencies
-          run: yarn
+      - run: yarn
 
       - name: lint and test
       - run: npx nx affected -t format:check,lint,test,build --parallel=3
